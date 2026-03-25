@@ -21,19 +21,35 @@ import {
   ShoppingCart,
   ArrowRight,
   CreditCard,
-  Wallet
+  Wallet,
+  SortDesc,
+  SortAsc,
+  Calendar,
+  ArrowDownWideNarrow,
+  ArrowUpWideNarrow,
+  Globe,
+  Search,
+  RefreshCcw
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { AboutUs, HelpPage, LegalInfoPage, ReturnsPage, SitemapPage, MechanicPage } from './LegalPages';
+import logo from './image-removebg-preview-1.png';
+import banner1 from './e9407866-6fcf-4152-92dc-729e46863e0c.png';
+import banner2 from './6198d3dc-85be-44d6-82f0-f5c916582a38.png';
 
 // --- Types ---
 
+type View = 'home' | 'catalog' | 'legal' | 'returns' | 'help' | 'about' | 'sitemap' | 'mechanic';
+
 interface CartItem {
-  id: number;
+  id: number | string;
   name: string;
   price: string;
   img: string;
   quantity: number;
 }
+
+// --- App Component ---
 
 // --- Components ---
 
@@ -48,8 +64,8 @@ const CartDrawer = ({
   isOpen: boolean; 
   onClose: () => void; 
   items: CartItem[]; 
-  onRemove: (id: number) => void;
-  onUpdateQuantity: (id: number, delta: number) => void;
+  onRemove: (id: number | string) => void;
+  onUpdateQuantity: (id: number | string, delta: number) => void;
   onCheckout: () => void;
 }) => {
   const total = items.reduce((acc, item) => acc + (parseFloat(item.price.replace('€', '')) * item.quantity), 0);
@@ -95,7 +111,7 @@ const CartDrawer = ({
                 items.map((item) => (
                   <div key={item.id} className="flex gap-4 group">
                     <div className="w-20 h-20 bg-tactical-gray rounded-sm overflow-hidden shrink-0">
-                      <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                      <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" referrerPolicy="no-referrer" />
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-1">
@@ -395,7 +411,7 @@ const CheckoutModal = ({
                   <div key={item.id} className="flex justify-between items-center gap-4">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-tactical-black rounded-sm overflow-hidden">
-                        <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale" />
+                        <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
                       </div>
                       <div>
                         <div className="text-xs font-bold uppercase tracking-tight">{item.name}</div>
@@ -431,11 +447,17 @@ const CheckoutModal = ({
 const Navbar = ({ 
   onCategoryClick, 
   cartCount, 
-  onCartClick 
+  onCartClick,
+  onLogoClick,
+  onAboutClick,
+  onMechanicClick
 }: { 
-  onCategoryClick: (cat: 'replicas' | 'accesorios' | 'extras') => void;
+  onCategoryClick: (cat: 'replicas' | 'piezasInternas' | 'cuchilleria' | 'supervivencia') => void;
   cartCount: number;
   onCartClick: () => void;
+  onLogoClick: () => void;
+  onAboutClick: () => void;
+  onMechanicClick: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -451,31 +473,31 @@ const Navbar = ({
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-tactical-black/90 backdrop-blur-lg border-b border-white/10 py-3' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-8">
-          <a href="tel:6285252696" className="hidden lg:flex bg-tactical-orange text-tactical-black px-5 py-2 rounded-sm hover:bg-white transition-all cta-glow items-center gap-2 text-[10px] font-black uppercase tracking-widest">
-            <Phone size={14} />
-            Llámanos ahora
-          </a>
-          
-          <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="flex items-center gap-3 group cursor-pointer" onClick={onLogoClick}>
             <motion.div 
               animate={{ 
                 filter: ["hue-rotate(0deg) saturate(1)", "hue-rotate(360deg) saturate(1.5)", "hue-rotate(0deg) saturate(1)"],
               }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              className="relative w-12 h-12 flex items-center justify-center"
+              className="relative w-14 h-14 flex items-center justify-center"
             >
-              {/* Custom Star Logo inspired by the image */}
-              <svg viewBox="0 0 100 100" className="w-full h-full fill-tactical-orange drop-shadow-[0_0_8px_rgba(242,125,38,0.5)]">
-                <path d="M50 5L61.2 35.5H95L67.6 54.5L78.8 85L50 66L21.2 85L32.4 54.5L5 35.5H38.8L50 5Z" />
-                <circle cx="50" cy="50" r="15" className="fill-tactical-black" />
-                <path d="M45 45 Q50 40 55 45 M45 55 Q50 60 55 55" stroke="white" strokeWidth="2" fill="none" />
-              </svg>
+              <img 
+                src={logo} 
+                alt="MLQ Tactics Logo" 
+                className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(242,125,38,0.3)]" 
+                referrerPolicy="no-referrer" 
+              />
             </motion.div>
             <div className="flex flex-col -gap-1">
               <span className="text-2xl font-display font-black tracking-tighter leading-none">MLQ<span className="text-tactical-orange">TACTICS</span></span>
               <span className="text-[8px] font-bold uppercase tracking-[0.3em] text-gray-500">Elite Airsoft Division</span>
             </div>
           </div>
+          
+          <a href="tel:6285252696" className="hidden sm:flex bg-tactical-orange text-tactical-black px-4 py-1.5 rounded-sm hover:bg-white transition-all cta-glow items-center gap-2 text-[9px] font-black uppercase tracking-widest">
+            <Phone size={12} />
+            Llámanos ahora
+          </a>
         </div>
 
         {/* Desktop Menu */}
@@ -510,25 +532,32 @@ const Navbar = ({
                     Réplicas <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   </button>
                   <button 
-                    onClick={() => { onCategoryClick('accesorios'); setShowShopDropdown(false); }}
+                    onClick={() => { onCategoryClick('piezasInternas'); setShowShopDropdown(false); }}
                     className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
                   >
-                    Accesorios <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                    Piezas Internas <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   </button>
                   <button 
-                    onClick={() => { onCategoryClick('extras'); setShowShopDropdown(false); }}
+                    onClick={() => { onCategoryClick('cuchilleria'); setShowShopDropdown(false); }}
                     className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
                   >
-                    Consumibles <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                    Cuchillería <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                  </button>
+                  <button 
+                    onClick={() => { onCategoryClick('supervivencia'); setShowShopDropdown(false); }}
+                    className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
+                  >
+                    Supervivencia <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   </button>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
           
-          <a href="#servicios" className="hover:text-tactical-orange transition-colors">Upgrades</a>
+          <button onClick={onAboutClick} className="hover:text-tactical-orange transition-colors">QUIÉNES SOMOS</button>
+          <button onClick={onMechanicClick} className="hover:text-tactical-orange transition-colors">SERVICIO DE MECÁNICO</button>
           <a href="#contacto" className="hover:text-tactical-orange transition-colors">Contacto</a>
-          
+
           <button 
             onClick={onCartClick}
             className="relative p-2 hover:text-tactical-orange transition-colors group"
@@ -560,15 +589,13 @@ const Navbar = ({
             <div className="flex flex-col gap-4">
               <span className="text-xs font-bold uppercase tracking-widest text-gray-500">TIENDA</span>
               <button onClick={() => { onCategoryClick('replicas'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Réplicas</button>
-              <button onClick={() => { onCategoryClick('accesorios'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Accesorios</button>
-              <button onClick={() => { onCategoryClick('extras'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Consumibles</button>
+              <button onClick={() => { onCategoryClick('piezasInternas'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Piezas Internas</button>
+              <button onClick={() => { onCategoryClick('cuchilleria'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Cuchillería</button>
+              <button onClick={() => { onCategoryClick('supervivencia'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Supervivencia</button>
             </div>
-            <a href="#servicios" onClick={() => setIsOpen(false)} className="text-xl font-display font-bold uppercase">Upgrades</a>
+            <button onClick={() => { onAboutClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">QUIÉNES SOMOS</button>
+            <button onClick={() => { onMechanicClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">SERVICIO DE MECÁNICO</button>
             <a href="#contacto" onClick={() => setIsOpen(false)} className="text-xl font-display font-bold uppercase">Contacto</a>
-            <a href="tel:6285252696" onClick={() => setIsOpen(false)} className="bg-tactical-orange text-tactical-black py-4 font-display font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-              <Phone size={20} />
-              Llámanos ahora
-            </a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -577,16 +604,38 @@ const Navbar = ({
 };
 
 const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const heroImages = [
+    "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1590235438337-97939c36600c?auto=format&fit=crop&q=80&w=2000"
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2000" 
-          alt="Airsoft Tactical Action" 
-          className="w-full h-full object-cover opacity-40"
-          referrerPolicy="no-referrer"
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ 
+              backgroundImage: `url(${heroImages[currentIndex]})`,
+              opacity: 0.4
+            }}
+          />
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-r from-tactical-black via-tactical-black/60 to-transparent"></div>
         <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-tactical-black to-transparent"></div>
       </div>
@@ -602,7 +651,7 @@ const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tactical-orange opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-tactical-orange"></span>
             </span>
-            Especialistas en Milsim & Upgrades
+            ESPECIALISTAS EN REPLICAS Y MEJORAS DE AIRSOFT
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black leading-[0.9] mb-6">
@@ -621,9 +670,14 @@ const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
             >
               VER CATÁLOGO <ChevronRight className="group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="border border-white/20 hover:border-white px-8 py-4 rounded-sm font-display font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all">
-              VISITAR TIENDA (RUBÍ)
-            </button>
+            <a 
+              href="https://www.google.com/maps/place/MLQ+TACTIC/@41.4875851,2.0339609,17z/data=!3m1!4b1!4m6!3m5!1s0x12a4917210272465:0x66bb45ab0033a36a!8m2!3d41.4875811!4d2.0365358!16s%2Fg%2F11c7641fnv?entry=ttu&g_ep=EgoyMDI2MDMyMi4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-white/20 hover:border-white px-8 py-4 rounded-sm font-display font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all"
+            >
+              VISITAR TIENDA FÍSICA
+            </a>
           </div>
 
           <div className="mt-12 flex items-center gap-6">
@@ -654,9 +708,9 @@ const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
       <div className="absolute right-10 bottom-20 hidden lg:block">
         <div className="glass-card p-4 rounded-sm border-l-4 border-l-tactical-orange">
           <div className="flex items-center gap-4">
-            <div className="text-tactical-orange font-display font-black text-3xl">98%</div>
+            <div className="text-tactical-orange font-display font-black text-3xl">100%</div>
             <div className="text-[10px] uppercase font-bold tracking-widest text-gray-400">
-              Precisión en <br /> Upgrades Custom
+              Garantía de <br /> calidad
             </div>
           </div>
         </div>
@@ -719,11 +773,6 @@ const SocialProof = () => {
 const ValueProp = () => {
   const features = [
     { 
-      icon: <Zap className="text-tactical-orange" />, 
-      title: "Upgrades de Precisión", 
-      desc: "Taller especializado en R-Hop, MOSFETs y optimización de FPS para máxima ventaja competitiva." 
-    },
-    { 
       icon: <Shield className="text-tactical-orange" />, 
       title: "Garantía Táctica", 
       desc: "Todos nuestros productos y servicios técnicos cuentan con garantía real y soporte post-venta." 
@@ -764,12 +813,12 @@ const ValueProp = () => {
   );
 };
 
-const Categories = ({ onReplicasClick }: { onReplicasClick: () => void }) => {
+const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }) => {
   const cats = [
-    { name: "Réplicas", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=800", count: "120+ Modelos" },
-    { name: "Equipamiento", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800", count: "Vests, Cascos, Botas" },
-    { name: "Accesorios", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=800", count: "Ópticas, Linternas" },
-    { name: "Upgrades", img: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800", count: "Taller Pro" },
+    { id: 'replicas', name: "Réplicas", img: banner1, count: "120+ Modelos" },
+    { id: 'piezasInternas', name: "Piezas Internas", img: banner2, count: "Upgrades de Precisión" },
+    { id: 'cuchilleria', name: "Cuchillería", img: "https://images.unsplash.com/photo-1574621100236-d25b64cfd647?auto=format&fit=crop&q=80&w=800", count: "Tácticos, Supervivencia" },
+    { id: 'supervivencia', name: "Supervivencia", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800", count: "Camping, Bushcraft" },
   ];
 
   return (
@@ -779,7 +828,10 @@ const Categories = ({ onReplicasClick }: { onReplicasClick: () => void }) => {
           <div>
             <h2 className="text-4xl md:text-6xl font-display font-black">EQUÍPATE PARA EL <br /><span className="text-tactical-orange">ÉXITO</span></h2>
           </div>
-          <button className="text-tactical-orange font-display font-bold uppercase tracking-widest flex items-center gap-2 hover:text-white transition-colors">
+          <button 
+            onClick={() => onCategoryClick('replicas')}
+            className="text-tactical-orange font-display font-bold uppercase tracking-widest flex items-center gap-2 hover:text-white transition-colors"
+          >
             Ver todas las categorías <ArrowRight size={20} />
           </button>
         </div>
@@ -788,7 +840,7 @@ const Categories = ({ onReplicasClick }: { onReplicasClick: () => void }) => {
           {cats.map((cat, i) => (
             <div 
               key={i} 
-              onClick={cat.name === "Réplicas" ? onReplicasClick : undefined}
+              onClick={() => onCategoryClick(cat.id)}
               className="relative h-[400px] overflow-hidden group cursor-pointer"
             >
               <img 
@@ -854,7 +906,6 @@ const FAQ = () => {
   const faqs = [
     { q: "¿Hacéis envíos a toda España?", a: "Sí, realizamos envíos urgentes 24/48h a toda la península y Baleares. También puedes recoger tu pedido gratis en nuestra tienda de Rubí." },
     { q: "¿Es legal jugar al airsoft en España?", a: "Totalmente legal siempre que se cumpla la normativa de tarjetas de armas de 4ª categoría. En MLQTactics te asesoramos y ayudamos con todo el papeleo." },
-    { q: "¿Qué garantía tienen los upgrades?", a: "Nuestros trabajos de taller tienen una garantía de 3 meses en mano de obra. Usamos solo componentes de primera calidad (Gate, Maxx Model, SHS)." },
     { q: "Soy principiante, ¿por dónde empiezo?", a: "Te recomendamos nuestro 'Pack Recluta' que incluye réplica fiable, protección ocular homologada y batería. Ven a vernos y te orientaremos sin compromiso." },
   ];
 
@@ -894,79 +945,105 @@ const FAQ = () => {
   );
 };
 
-const Footer = () => {
+const Footer = ({ onNavigate }: { onNavigate: (view: View) => void }) => {
+  const [openSection, setOpenSection] = useState<string | null>(null);
+
+  const toggleSection = (id: string) => {
+    if (window.innerWidth < 768) {
+      setOpenSection(openSection === id ? null : id);
+    }
+  };
+
+  const sections = [
+    {
+      id: 'empresa',
+      title: 'Empresa',
+      links: [
+        { label: 'QUIÉNES SOMOS', view: 'about' as View },
+        { label: 'SERVICIO DE MECÁNICO', view: 'mechanic' as View },
+      ]
+    },
+    {
+      id: 'ayuda',
+      title: 'Ayuda',
+      links: [
+        { label: 'Ayuda', view: 'help' as View },
+      ]
+    },
+    {
+      id: 'legal',
+      title: 'Legal',
+      links: [
+        { label: 'Información legal', view: 'legal' as View },
+        { label: 'Devoluciones', view: 'returns' as View },
+      ]
+    }
+  ];
+
   return (
     <footer id="contacto" className="bg-tactical-black pt-20 pb-10 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          <div className="col-span-1 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-tactical-orange flex items-center justify-center rounded-sm transform rotate-45">
-                <Target className="text-tactical-black -rotate-45 w-5 h-5" />
-              </div>
-              <span className="text-xl font-display font-black tracking-tighter ml-2">MLQ<span className="text-tactical-orange">TACTICS</span></span>
+        <div className="grid md:grid-cols-3 gap-12 mb-16">
+          {sections.map((section) => (
+            <div key={section.id} className="border-b md:border-0 border-white/5 last:border-0">
+              <button 
+                onClick={() => toggleSection(section.id)}
+                className="w-full md:cursor-default flex justify-between items-center py-4 md:py-0 md:mb-6"
+              >
+                <h4 className="font-display font-bold uppercase tracking-widest text-[10px] text-gray-500">{section.title}</h4>
+                <ChevronDown className={`md:hidden transition-transform duration-300 ${openSection === section.id ? 'rotate-180' : ''}`} size={14} />
+              </button>
+              
+              <AnimatePresence>
+                {(openSection === section.id || window.innerWidth >= 768) && (
+                  <motion.ul 
+                    initial={window.innerWidth < 768 ? { height: 0, opacity: 0 } : false}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden space-y-3 pb-6 md:pb-0"
+                  >
+                    {section.links.map((link) => (
+                      <li key={link.label}>
+                        <button 
+                          onClick={() => { onNavigate(link.view); window.scrollTo(0, 0); }}
+                          className="text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-tactical-orange transition-colors flex items-center gap-2"
+                        >
+                          <ChevronRight size={10} className="text-tactical-orange/50" />
+                          {link.label}
+                        </button>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
             </div>
-            <p className="text-gray-500 text-sm mb-6">
-              Tu centro de referencia para airsoft en Barcelona. Especialistas en equipamiento de alto rendimiento y servicios técnicos avanzados.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 bg-tactical-gray flex items-center justify-center rounded-sm hover:bg-tactical-orange transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="w-10 h-10 bg-tactical-gray flex items-center justify-center rounded-sm hover:bg-tactical-orange transition-colors">
-                <Facebook size={20} />
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold uppercase tracking-widest text-sm mb-6 text-white">Navegación</h4>
-            <ul className="space-y-4 text-gray-500 text-sm font-bold uppercase tracking-tighter">
-              <li><a href="#" className="hover:text-tactical-orange transition-colors">Réplicas</a></li>
-              <li><a href="#" className="hover:text-tactical-orange transition-colors">Equipamiento</a></li>
-              <li><a href="#" className="hover:text-tactical-orange transition-colors">Taller de Upgrades</a></li>
-              <li><a href="#" className="hover:text-tactical-orange transition-colors">Eventos & Partidas</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold uppercase tracking-widest text-sm mb-6 text-white">Contacto</h4>
-            <ul className="space-y-4 text-gray-500 text-sm">
-              <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-tactical-orange shrink-0" />
-                <span>Carrer de la Táctica, 12, <br /> 08191 Rubí, Barcelona</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone size={18} className="text-tactical-orange shrink-0" />
-                <span>+34 93X XX XX XX</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Clock size={18} className="text-tactical-orange shrink-0" />
-                <span>Lun - Sáb: 10:00 - 20:00</span>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold uppercase tracking-widest text-sm mb-6 text-white">Newsletter</h4>
-            <p className="text-gray-500 text-xs mb-4 uppercase font-bold tracking-widest">Recibe ofertas exclusivas y avisos de partidas.</p>
-            <div className="flex gap-2">
-              <input 
-                type="email" 
-                placeholder="TU EMAIL" 
-                className="bg-tactical-gray border border-white/10 px-4 py-2 text-xs w-full focus:outline-none focus:border-tactical-orange"
-              />
-              <button className="bg-tactical-orange text-tactical-black px-4 py-2 font-display font-black uppercase text-xs">OK</button>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">
-          <div>© 2026 MLQTactics. Todos los derechos reservados.</div>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Aviso Legal</a>
-            <a href="#" className="hover:text-white transition-colors">Privacidad</a>
-            <a href="#" className="hover:text-white transition-colors">Cookies</a>
+        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 opacity-80 grayscale hover:grayscale-0 transition-all cursor-pointer" onClick={() => onNavigate('home')}>
+              <img 
+                src={logo} 
+                alt="MLQ Tactics Logo" 
+                className="w-6 h-6 object-contain" 
+                referrerPolicy="no-referrer" 
+              />
+              <span className="text-xs font-display font-black tracking-tighter">MLQ<span className="text-tactical-orange">TACTICS</span></span>
+            </div>
+            <div className="h-4 w-[1px] bg-white/10 hidden md:block"></div>
+            <div className="flex gap-4">
+              <a href="#" className="text-gray-600 hover:text-tactical-orange transition-colors"><Instagram size={16} /></a>
+              <a href="#" className="text-gray-600 hover:text-tactical-orange transition-colors"><Facebook size={16} /></a>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6 text-[9px] text-gray-600 font-bold uppercase tracking-[0.2em]">
+            <button onClick={() => onNavigate('sitemap')} className="hover:text-white transition-colors flex items-center gap-1">
+              <Globe size={10} /> Mapa del sitio
+            </button>
+            <span className="hidden md:inline opacity-20">|</span>
+            <span>© 2026 MLQTactics. Elite Airsoft Division.</span>
           </div>
         </div>
       </div>
@@ -974,15 +1051,154 @@ const Footer = () => {
   );
 };
 
+const ProductDetailModal = ({ 
+  isOpen, 
+  onClose, 
+  product,
+  onAddToCart
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  product: any;
+  onAddToCart: (item: any) => void;
+}) => {
+  if (!product) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/90 backdrop-blur-md z-[150]"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed inset-4 md:inset-10 lg:inset-20 bg-tactical-black border border-white/10 z-[160] shadow-2xl overflow-hidden flex flex-col md:flex-row"
+          >
+            <button 
+              onClick={onClose}
+              className="absolute top-6 right-6 p-2 bg-black/50 hover:bg-tactical-orange text-white hover:text-tactical-black rounded-full transition-all z-10"
+            >
+              <X size={24} />
+            </button>
+
+            <div className="w-full md:w-1/2 h-64 md:h-full bg-tactical-gray relative">
+              <img 
+                src={product.img} 
+                alt={product.name} 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-tactical-black to-transparent md:hidden"></div>
+            </div>
+
+            <div className="flex-1 p-8 md:p-12 overflow-y-auto custom-scrollbar">
+              <div className="mb-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-tactical-orange/10 border border-tactical-orange/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-tactical-orange">
+                    {product.category}
+                  </span>
+                  <span className="bg-white/5 border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    {product.status}
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter leading-none mb-4">
+                  {product.name}
+                </h2>
+                <div className="text-3xl font-display font-black text-tactical-orange">
+                  {product.price}
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-4 flex items-center gap-2">
+                    <Target size={14} className="text-tactical-orange" /> ESPECIFICACIONES TÉCNICAS
+                  </h3>
+                  <div className="text-gray-300 leading-relaxed whitespace-pre-line font-mono text-sm bg-white/5 p-6 border-l-2 border-tactical-orange">
+                    {product.longDesc || product.desc}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/5 p-4 border border-white/5">
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">DISPONIBILIDAD</div>
+                    <div className="text-sm font-bold uppercase">Inmediata</div>
+                  </div>
+                  <div className="bg-white/5 p-4 border border-white/5">
+                    <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">GARANTÍA</div>
+                    <div className="text-sm font-bold uppercase">2 Años MLQ</div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => { onAddToCart(product); onClose(); }}
+                  className="w-full bg-white text-tactical-black py-5 font-display font-black uppercase tracking-widest hover:bg-tactical-orange transition-all flex items-center justify-center gap-3 group"
+                >
+                  AÑADIR A LA CESTA <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
 // --- Main App ---
 
 export default function App() {
+  const [view, setView] = useState<View>('home');
   const [showCatalog, setShowCatalog] = useState(false);
-  const [activeTab, setActiveTab] = useState<'replicas' | 'accesorios' | 'extras'>('replicas');
+  const [activeTab, setActiveTab] = useState<'replicas' | 'piezasInternas' | 'cuchilleria' | 'supervivencia'>('replicas');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState<'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-new' | 'date-old'>('date-new');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [dynamicProducts, setDynamicProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('https://opensheet.elk.sh/1yAw3wHiLcSBAqPGOtfZ7FDiFS4sLV1dZnRcKR8Dsoyk/Hoja1');
+        if (!response.ok) throw new Error('Error al cargar productos');
+        const data = await response.json();
+        
+        const activeProducts = data
+          .filter((item: any) => item.activo === 'TRUE')
+          .map((item: any, index: number) => {
+            const stock = parseInt(item.stock) || 0;
+            return {
+              id: item.id || `dynamic-${index}`,
+              name: item.nombre || 'Producto sin nombre',
+              desc: item.descripcion || 'Sin descripción disponible',
+              price: item.precio || '0.00€',
+              img: item.imagen || 'https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=400',
+              stock: stock,
+              category: item.categoria || 'General',
+              status: stock > 0 ? 'EN STOCK' : 'AGOTADO',
+              date: new Date().toISOString()
+            };
+          });
+        
+        setDynamicProducts(activeProducts);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const addToCart = (item: any) => {
     setCart(prev => {
@@ -995,11 +1211,11 @@ export default function App() {
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: number | string) => {
     setCart(prev => prev.filter(item => item.id !== id));
   };
 
-  const updateQuantity = (id: number, delta: number) => {
+  const updateQuantity = (id: number | string, delta: number) => {
     setCart(prev => prev.map(item => {
       if (item.id === id) {
         const newQty = Math.max(1, item.quantity + delta);
@@ -1012,157 +1228,121 @@ export default function App() {
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const catalogData = {
-    replicas: [
-      { id: 1, name: "Tokyo Marui M4A1 MWS", price: "599.00€", category: "GBBR", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Sistema de gas con retroceso realista y cuerpo de metal de alta fidelidad." },
-      { id: 2, name: "Krytac Kriss Vector", price: "485.00€", category: "AEG", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "Últimas Unidades", desc: "Diseño futurista con gatillo electrónico y ráfaga de 2 disparos integrada." },
-      { id: 3, name: "Tokyo Marui Hi-Capa 5.1", price: "165.00€", category: "Pistola GBB", img: "https://images.unsplash.com/photo-1590235438337-97939c36600c?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "La reina de las pistolas para IPSC y CQB. Fiabilidad japonesa legendaria." },
-      { id: 4, name: "LCT AK-74M NV", price: "395.00€", category: "AEG", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Acero real y robustez extrema. La réplica de AK más realista del mercado." },
-      { id: 5, name: "Specna Arms Edge 2.0", price: "289.00€", category: "AEG", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=400", status: "Oferta", desc: "Incluye MOSFET GATE ASTER y motor de alto torque para respuesta rápida." },
-      { id: 6, name: "Novritsch SSG10 A1", price: "299.00€", category: "Sniper", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=400", status: "Bajo Pedido", desc: "Precisión quirúrgica de fábrica. Capaz de manejar muelles de alta potencia." },
-    ],
-    accesorios: [
-      { id: 7, name: "Mira Red Dot T1", price: "45.00€", category: "Óptica", img: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Punto rojo compacto con múltiples niveles de brillo y montura elevada." },
-      { id: 8, name: "Silenciador Tracer Unit", price: "65.00€", category: "Externo", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "Nuevo", desc: "Ilumina tus bolas trazadoras para partidas nocturnas y entornos CQB." },
-      { id: 9, name: "Linterna Táctica 800lm", price: "38.00€", category: "Iluminación", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Potente haz de luz con montura para raíl Picatinny y pulsador remoto." },
-      { id: 10, name: "Grip Vertical Angular", price: "15.00€", category: "Ergonomía", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Mejora el control y la estabilidad de tu réplica en transiciones rápidas." },
-      { id: 11, name: "Cargador Mid-Cap 140bbs", price: "12.00€", category: "Magazines", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "Pack 5x Oferta", desc: "Sin ruidos de sonajero. Alimentación perfecta incluso en altas cadencias." },
-      { id: 12, name: "Correa Táctica 2 Puntos", price: "22.00€", category: "Transporte", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Ajuste rápido para transiciones cómodas entre primaria y secundaria." },
-    ],
-    extras: [
-      { id: 13, name: "Bolas Bio 0.25g 1kg", price: "14.50€", category: "Consumibles", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "Top Ventas", desc: "Biodegradables de alta calidad con pulido espejo para evitar atascos." },
-      { id: 14, name: "Gas Green 1000ml", price: "11.00€", category: "Consumibles", img: "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Presión estable con mezcla de silicona para el mantenimiento de juntas." },
-      { id: 15, name: "Batería LiPo 11.1V", price: "25.00€", category: "Energía", img: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Alta tasa de descarga para una respuesta de gatillo instantánea en AEGs." },
-      { id: 16, name: "Gafas Protección Bolle", price: "18.00€", category: "Seguridad", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=400", status: "Homologadas", desc: "Protección balística certificada con tratamiento avanzado anti-vaho." },
-      { id: 17, name: "Chaleco Táctico JPC", price: "55.00€", category: "Gear", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=400", status: "Nuevo", desc: "Diseño ligero, modular y totalmente ajustable para máxima movilidad." },
-      { id: 18, name: "Maleta Rígida 100cm", price: "85.00€", category: "Transporte", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=400", status: "En Stock", desc: "Protección total contra impactos y agua para el transporte seguro de tu equipo." },
-    ]
+    replicas: dynamicProducts.filter(p => {
+      const cat = p.category.toLowerCase();
+      return cat.includes('replica') || ['gbbr', 'aeg', 'pistola gbb', 'sniper'].includes(cat) || (!['interno', 'piezas internas', 'cuchillería', 'supervivencia'].includes(cat));
+    }),
+    piezasInternas: dynamicProducts.filter(p => ['interno', 'piezas internas'].includes(p.category.toLowerCase())),
+    cuchilleria: dynamicProducts.filter(p => p.category.toLowerCase() === 'cuchillería'),
+    supervivencia: dynamicProducts.filter(p => p.category.toLowerCase() === 'supervivencia')
+  };
+
+  const getSortedData = () => {
+    let data = [...catalogData[activeTab]];
+    
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      data = data.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        item.category.toLowerCase().includes(query) || 
+        item.desc.toLowerCase().includes(query) ||
+        (item as any).tags?.some((tag: string) => tag.toLowerCase().includes(query))
+      );
+    }
+
+    return data.sort((a, b) => {
+      const priceA = parseFloat(a.price.replace('€', ''));
+      const priceB = parseFloat(b.price.replace('€', ''));
+      
+      switch (sortOption) {
+        case 'name-asc': return a.name.localeCompare(b.name);
+        case 'name-desc': return b.name.localeCompare(a.name);
+        case 'price-asc': return priceA - priceB;
+        case 'price-desc': return priceB - priceA;
+        case 'date-new': return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case 'date-old': return new Date(a.date).getTime() - new Date(b.date).getTime();
+        default: return 0;
+      }
+    });
   };
 
   return (
     <div className="relative">
       <Navbar 
-        onCategoryClick={(cat) => { setActiveTab(cat); setShowCatalog(true); }} 
+        onCategoryClick={(cat) => { setActiveTab(cat); setShowCatalog(true); setView('catalog'); }} 
         cartCount={cartCount}
         onCartClick={() => setIsCartOpen(true)}
+        onLogoClick={() => { setView('home'); setShowCatalog(false); }}
+        onAboutClick={() => { setView('about'); setShowCatalog(false); }}
+        onMechanicClick={() => { setView('mechanic'); setShowCatalog(false); }}
       />
       
       <main>
-        <Hero onCatalogClick={() => { setActiveTab('replicas'); setShowCatalog(true); }} />
-        <SocialProof />
-        <ValueProp />
-        <Categories onReplicasClick={() => { setActiveTab('replicas'); setShowCatalog(true); }} />
-        
-        {/* Store Expertise Section */}
-        <section id="experiencia" className="py-24 bg-tactical-green/10 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-            <div className="order-2 md:order-1">
-              <div className="relative group">
-                <img 
-                  src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Elite Arsenal" 
-                  className="rounded-sm grayscale group-hover:grayscale-0 transition-all duration-700"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute -bottom-6 -right-6 bg-tactical-orange p-8 rounded-sm hidden lg:block">
-                  <div className="text-tactical-black font-display font-black text-4xl">TECH</div>
-                  <div className="text-tactical-black font-bold text-[10px] uppercase tracking-widest">Custom Workshop</div>
+        {view === 'home' && (
+          <>
+            <Hero onCatalogClick={() => { setView('catalog'); setShowCatalog(true); }} />
+            <SocialProof />
+            <ValueProp />
+            <Categories onCategoryClick={(cat) => { setActiveTab(cat); setShowCatalog(true); setView('catalog'); }} />
+            
+            {/* Authority Section */}
+            <section className="py-24 bg-tactical-black border-t border-white/5">
+              <div className="max-w-7xl mx-auto px-6 text-center">
+                <h2 className="text-3xl md:text-5xl font-display font-black mb-12 uppercase tracking-tighter">PARTNERS DE <span className="text-tactical-orange">ÉLITE</span></h2>
+                <div className="flex flex-wrap justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all">
+                  <div className="font-display font-black text-2xl tracking-tighter">TOKYO MARUI</div>
+                  <div className="font-display font-black text-2xl tracking-tighter">KRYTAC</div>
+                  <div className="font-display font-black text-2xl tracking-tighter">GATE</div>
+                  <div className="font-display font-black text-2xl tracking-tighter">5.11 TACTICAL</div>
+                  <div className="font-display font-black text-2xl tracking-tighter">VFC</div>
                 </div>
               </div>
-            </div>
-            <div className="order-1 md:order-2">
-              <h2 className="text-4xl md:text-6xl font-display font-black mb-6 uppercase leading-tight">EL ARSENAL DE LOS <br /><span className="text-tactical-orange">PROFESIONALES</span></h2>
-              <p className="text-gray-400 mb-8 leading-relaxed">
-                En MLQTactics no movemos cajas, seleccionamos equipo. Cada réplica que sale de nuestra tienda en Rubí ha sido verificada para cumplir con los estándares más exigentes de rendimiento y fiabilidad.
-              </p>
-              <ul className="space-y-4 mb-10">
-                {[
-                  "Asesoramiento técnico por jugadores veteranos",
-                  "Upgrades de precisión y MOSFETs de última generación",
-                  "Stock real de marcas premium (TM, Krytac, VFC)",
-                  "Soporte post-venta y garantía técnica directa"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 font-display font-bold uppercase text-sm tracking-tight">
-                    <CheckCircle2 className="text-tactical-orange" size={20} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button 
-                onClick={() => { setActiveTab('replicas'); setShowCatalog(true); }}
-                className="bg-white text-tactical-black px-8 py-4 font-display font-black uppercase tracking-widest hover:bg-tactical-orange transition-all"
-              >
-                EXPLORAR ARSENAL
-              </button>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        <UrgencySection />
-        
-        {/* Authority Section */}
-        <section className="py-24 bg-tactical-black border-t border-white/5">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-5xl font-display font-black mb-12 uppercase tracking-tighter">PARTNERS DE <span className="text-tactical-orange">ÉLITE</span></h2>
-            <div className="flex flex-wrap justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all">
-              {/* Mock logos or icons representing brands */}
-              <div className="font-display font-black text-2xl tracking-tighter">TOKYO MARUI</div>
-              <div className="font-display font-black text-2xl tracking-tighter">KRYTAC</div>
-              <div className="font-display font-black text-2xl tracking-tighter">GATE</div>
-              <div className="font-display font-black text-2xl tracking-tighter">5.11 TACTICAL</div>
-              <div className="font-display font-black text-2xl tracking-tighter">VFC</div>
-            </div>
-          </div>
-        </section>
+            <FAQ />
 
-        <FAQ />
+            {/* Final CTA */}
+            <section className="py-32 relative overflow-hidden bg-tactical-green">
+              <div className="absolute inset-0 z-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2000" 
+                  alt="Final CTA" 
+                  className="w-full h-full object-cover opacity-20"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-tactical-black/60"></div>
+              </div>
+              <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+                <h2 className="text-5xl md:text-8xl font-display font-black mb-8 leading-none uppercase">¿LISTO PARA EL <br /><span className="text-tactical-orange">SIGUIENTE NIVEL?</span></h2>
+                <p className="text-xl text-gray-300 mb-12 font-bold uppercase tracking-widest">No esperes a que te lo cuenten. Equípate con los mejores.</p>
+                <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                  <button 
+                    onClick={() => { setView('catalog'); setShowCatalog(true); }}
+                    className="bg-tactical-orange text-tactical-black px-12 py-6 font-display font-black uppercase tracking-[0.2em] text-lg cta-glow hover:bg-white transition-all"
+                  >
+                    IR AL CATÁLOGO
+                  </button>
+                  <button 
+                    onClick={() => { setView('mechanic'); setShowCatalog(false); }}
+                    className="bg-transparent border-2 border-white text-white px-12 py-6 font-display font-black uppercase tracking-[0.2em] text-lg hover:bg-white hover:text-tactical-black transition-all"
+                  >
+                    RESERVAR UPGRADE
+                  </button>
+                </div>
+                <div className="mt-12 flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-widest text-gray-400">
+                  <Shield size={16} className="text-tactical-orange" /> Pago 100% Seguro
+                  <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
+                  <Package size={16} className="text-tactical-orange" /> Envío 24h
+                  <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
+                  <Wrench size={16} className="text-tactical-orange" /> Soporte Técnico Pro
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
-        {/* Final CTA */}
-        <section className="py-32 relative overflow-hidden bg-tactical-green">
-          <div className="absolute inset-0 z-0">
-            <img 
-              src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2000" 
-              alt="Final CTA" 
-              className="w-full h-full object-cover opacity-20"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-tactical-black/60"></div>
-          </div>
-          <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-5xl md:text-8xl font-display font-black mb-8 leading-none uppercase">¿LISTO PARA EL <br /><span className="text-tactical-orange">SIGUIENTE NIVEL?</span></h2>
-            <p className="text-xl text-gray-300 mb-12 font-bold uppercase tracking-widest">No esperes a que te lo cuenten. Equípate con los mejores.</p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button 
-                onClick={() => { setActiveTab('replicas'); setShowCatalog(true); }}
-                className="bg-tactical-orange text-tactical-black px-12 py-6 font-display font-black uppercase tracking-[0.2em] text-lg cta-glow hover:bg-white transition-all"
-              >
-                IR A LA TIENDA ONLINE
-              </button>
-              <button className="bg-transparent border-2 border-white text-white px-12 py-6 font-display font-black uppercase tracking-[0.2em] text-lg hover:bg-white hover:text-tactical-black transition-all">
-                RESERVAR UPGRADE
-              </button>
-            </div>
-            <div className="mt-12 flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-widest text-gray-400">
-              <Shield size={16} className="text-tactical-orange" /> Pago 100% Seguro
-              <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
-              <Package size={16} className="text-tactical-orange" /> Envío 24h
-              <span className="w-1 h-1 bg-gray-700 rounded-full"></span>
-              <Wrench size={16} className="text-tactical-orange" /> Soporte Técnico Pro
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-
-      {/* Catalog Modal */}
-      <AnimatePresence>
-        {showCatalog && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-tactical-black/95 backdrop-blur-xl overflow-y-auto pt-24 pb-12"
-          >
+        {view === 'catalog' && showCatalog && (
+          <div className="pt-24 pb-12 bg-tactical-black min-h-screen">
             <div className="max-w-7xl mx-auto px-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                 <div>
@@ -1170,77 +1350,177 @@ export default function App() {
                   <p className="text-gray-500 uppercase text-xs font-bold tracking-widest mt-2">Equipamiento verificado por operadores reales</p>
                 </div>
                 <button 
-                  onClick={() => setShowCatalog(false)}
+                  onClick={() => { setShowCatalog(false); setView('home'); }}
                   className="w-12 h-12 bg-white/5 hover:bg-tactical-orange transition-all flex items-center justify-center rounded-full group self-end md:self-center"
                 >
                   <X size={24} className="group-hover:text-tactical-black transition-colors" />
                 </button>
               </div>
 
-              {/* Tab Navigation */}
-              <div className="flex flex-wrap gap-4 mb-12 border-b border-white/10 pb-6">
-                {(['replicas', 'accesorios', 'extras'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-8 py-3 font-display font-black uppercase tracking-widest text-sm transition-all border-b-2 ${activeTab === tab ? 'border-tactical-orange text-tactical-orange bg-tactical-orange/5' : 'border-transparent text-gray-500 hover:text-white'}`}
+              {/* Tab Navigation & Search */}
+              <div className="flex flex-col gap-8 mb-12">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-white/10 pb-6 gap-8">
+                  <div className="flex flex-wrap gap-4">
+                    {(['replicas', 'piezasInternas', 'cuchilleria', 'supervivencia'] as const).map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`px-8 py-3 font-display font-black uppercase tracking-widest text-sm transition-all border-b-2 ${activeTab === tab ? 'border-tactical-orange text-tactical-orange bg-tactical-orange/5' : 'border-transparent text-gray-500 hover:text-white'}`}
+                      >
+                        {tab === 'cuchilleria' ? 'Cuchillería' : tab === 'supervivencia' ? 'Supervivencia' : tab === 'piezasInternas' ? 'Piezas Internas' : tab}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 bg-tactical-gray/20 p-2 rounded-sm border border-white/5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 px-2">Ordenar por:</span>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => setSortOption(sortOption === 'name-asc' ? 'name-desc' : 'name-asc')}
+                        className={`p-2 rounded-sm transition-all ${sortOption.includes('name') ? 'bg-tactical-orange text-tactical-black' : 'hover:bg-white/5 text-gray-400'}`}
+                        title="Alfabético"
+                      >
+                        {sortOption === 'name-asc' ? <SortAsc size={18} /> : <SortDesc size={18} />}
+                      </button>
+                      <button 
+                        onClick={() => setSortOption(sortOption === 'date-new' ? 'date-old' : 'date-new')}
+                        className={`p-2 rounded-sm transition-all ${sortOption.includes('date') ? 'bg-tactical-orange text-tactical-black' : 'hover:bg-white/5 text-gray-400'}`}
+                        title="Reciente"
+                      >
+                        <Calendar size={18} />
+                      </button>
+                      <button 
+                        onClick={() => setSortOption(sortOption === 'price-asc' ? 'price-desc' : 'price-asc')}
+                        className={`p-2 rounded-sm transition-all ${sortOption.includes('price') ? 'bg-tactical-orange text-tactical-black' : 'hover:bg-white/5 text-gray-400'}`}
+                        title="Precio"
+                      >
+                        {sortOption === 'price-asc' ? <ArrowUpWideNarrow size={18} /> : <ArrowDownWideNarrow size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Search Bar Block */}
+                <div className="flex flex-col md:flex-row gap-4 items-center">
+                  <div className="relative flex-1 w-full group">
+                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                      <Search size={18} className={`transition-colors duration-300 ${searchQuery ? 'text-tactical-orange' : 'text-gray-500 group-focus-within:text-tactical-orange'}`} />
+                    </div>
+                    <input 
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Buscar réplicas, accesorios, upgrades..."
+                      className="w-full bg-tactical-gray/20 border border-white/10 rounded-sm py-4 pl-12 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-tactical-orange/50 focus:bg-tactical-gray/30 transition-all font-bold uppercase tracking-widest text-xs"
+                    />
+                    {searchQuery && (
+                      <button 
+                        onClick={() => setSearchQuery('')}
+                        className="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-white transition-colors"
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 w-full md:w-auto">
+                    <div className="bg-tactical-gray/20 border border-white/10 px-6 py-4 rounded-sm flex items-center gap-3">
+                      <span className="text-tactical-orange font-black text-lg leading-none">{getSortedData().length}</span>
+                      <span className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Resultados</span>
+                    </div>
+                    {searchQuery && (
+                      <button 
+                        onClick={() => setSearchQuery('')}
+                        className="flex-1 md:flex-none bg-white/5 hover:bg-white/10 text-white px-6 py-4 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all border border-white/10"
+                      >
+                        Limpiar
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {getSortedData().length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getSortedData().map((item) => (
+                    <motion.div 
+                      key={item.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className={`glass-card group overflow-hidden border-white/5 hover:border-tactical-orange/30 transition-all ${item.stock === 0 ? 'opacity-60' : ''}`}
+                    >
+                      <div className="relative h-64 overflow-hidden cursor-pointer" onClick={() => setSelectedProduct(item)}>
+                        <img 
+                          src={item.img} 
+                          alt={item.name} 
+                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-tactical-orange/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <span className="bg-tactical-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-widest border border-tactical-orange/50">VER DETALLES</span>
+                        </div>
+                        <div className="absolute top-4 left-4 bg-tactical-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-tactical-orange border border-tactical-orange/30">
+                          {item.category}
+                        </div>
+                        <div className={`absolute top-4 right-4 px-3 py-1 text-[10px] font-black uppercase tracking-widest ${item.stock > 0 ? 'bg-tactical-orange text-tactical-black' : 'bg-red-600 text-white'}`}>
+                          {item.status}
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-display font-black uppercase tracking-tighter mb-2 group-hover:text-tactical-orange transition-colors">{item.name}</h3>
+                        <p className="text-gray-500 text-xs mb-6 leading-relaxed h-8 overflow-hidden">{item.desc}</p>
+                        <div className="flex justify-between items-center mt-auto">
+                          <div className="text-2xl font-display font-black text-white">{item.price}</div>
+                          <button 
+                            onClick={() => item.stock > 0 && addToCart(item)}
+                            disabled={item.stock === 0}
+                            className={`px-6 py-2 text-xs font-black uppercase tracking-widest transition-all ${item.stock > 0 ? 'bg-white text-tactical-black hover:bg-tactical-orange' : 'bg-gray-800 text-gray-500 cursor-not-allowed'}`}
+                          >
+                            {item.stock > 0 ? 'COMPRAR' : 'AGOTADO'}
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-24 text-center bg-tactical-gray/10 border border-white/5 rounded-sm">
+                  <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Search size={32} className="text-gray-600" />
+                  </div>
+                  <h3 className="text-2xl font-display font-black uppercase tracking-tighter text-white mb-2">No se han encontrado productos</h3>
+                  <p className="text-gray-500 uppercase text-xs font-bold tracking-widest mb-8">Intenta con otros términos o limpia los filtros</p>
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="bg-tactical-orange text-tactical-black px-8 py-3 text-xs font-black uppercase tracking-widest hover:bg-white transition-all"
                   >
-                    {tab}
+                    LIMPIAR BÚSQUEDA
                   </button>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {catalogData[activeTab].map((item) => (
-                  <motion.div 
-                    key={item.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="glass-card group overflow-hidden border-white/5 hover:border-tactical-orange/30 transition-all"
-                  >
-                    <div className="relative h-64 overflow-hidden">
-                      <img 
-                        src={item.img} 
-                        alt={item.name} 
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute top-4 left-4 bg-tactical-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-tactical-orange border border-tactical-orange/30">
-                        {item.category}
-                      </div>
-                      <div className="absolute top-4 right-4 bg-tactical-orange text-tactical-black px-3 py-1 text-[10px] font-black uppercase tracking-widest">
-                        {item.status}
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-display font-black uppercase tracking-tighter mb-2 group-hover:text-tactical-orange transition-colors">{item.name}</h3>
-                      <p className="text-gray-500 text-xs mb-6 leading-relaxed h-8 overflow-hidden">{item.desc}</p>
-                      <div className="flex justify-between items-center mt-auto">
-                        <div className="text-2xl font-display font-black text-white">{item.price}</div>
-                        <button 
-                          onClick={() => addToCart(item)}
-                          className="bg-white text-tactical-black px-6 py-2 text-xs font-black uppercase tracking-widest hover:bg-tactical-orange transition-all"
-                        >
-                          COMPRAR
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="mt-20 text-center">
-                <p className="text-gray-500 text-sm uppercase font-bold tracking-widest mb-6">¿Buscas algo específico? Lo conseguimos para ti.</p>
-                <button className="border border-white/20 hover:border-tactical-orange px-8 py-4 font-display font-black uppercase tracking-widest transition-all">
-                  CONSULTAR STOCK PERSONALIZADO
-                </button>
-              </div>
+                </div>
+              )}
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+
+        {view === 'legal' && <LegalInfoPage />}
+        {view === 'returns' && <ReturnsPage />}
+        {view === 'help' && <HelpPage />}
+        {view === 'about' && <AboutUs />}
+        {view === 'mechanic' && <MechanicPage />}
+        {view === 'sitemap' && <SitemapPage onNavigate={setView} />}
+      </main>
+
+      <Footer onNavigate={setView} />
+
+      <ProductDetailModal 
+        isOpen={!!selectedProduct} 
+        onClose={() => setSelectedProduct(null)} 
+        product={selectedProduct}
+        onAddToCart={addToCart}
+      />
+
+      {/* Catalog Modal - Removed as it's now a view */}
 
       <CartDrawer 
         isOpen={isCartOpen} 

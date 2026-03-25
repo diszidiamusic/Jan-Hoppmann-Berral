@@ -36,3 +36,19 @@
 .cta-glow:hover {
   box-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
 }
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
