@@ -78,19 +78,20 @@ export const AboutUs = () => (
   <div className="bg-tactical-black min-h-screen pb-24">
     <PageHeader title="QUIÉNES SOMOS" subtitle="Nuestra historia y misión" />
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <Section title="Nuestra Misión">
-        <p>En MLQTactics, no solo vendemos equipamiento; forjamos operadores. Nacimos de la pasión por el airsoft y la necesidad de un centro técnico de confianza en Barcelona.</p>
-        <p>Nuestra misión es elevar el nivel del juego en España, proporcionando acceso a las mejores marcas del mundo y un servicio de taller que roza la perfección mecánica.</p>
+      <Section title="Nuestra Historia">
+        <p>En junio de 2015 abrimos las puertas de nuestra tienda física en Rubí, Barcelona, dedicada a la venta de réplicas y material de airsoft en todas sus categorías. Lo que comenzó como un proyecto local se ha convertido en un referente para la comunidad táctica.</p>
+        <p>MLQ Tactics es una empresa pequeña con grandes ideas e inquietudes que no para de renovarse día a día para ofrecerte siempre lo último en tecnología y equipamiento.</p>
       </Section>
-      <Section title="El Equipo">
-        <p>Somos veteranos del campo. Cada miembro de nuestro equipo ha pasado cientos de horas en partidas de Milsim y CQB, lo que nos permite asesorarte con conocimiento de causa real.</p>
-        <p>No te recomendaremos lo más caro, sino lo que mejor se adapte a tu rol y estilo de juego.</p>
+      <Section title="Asesoramiento Individualizado">
+        <p>Somos especialistas en el asesoramiento personalizado de cada jugador. Entendemos que no todos los operadores tienen las mismas necesidades; por eso, analizamos tu nivel y compromiso con la actividad para recomendarte el equipo que realmente necesitas.</p>
+        <p>No te recomendaremos lo más caro, sino lo que mejor se adapte a tu rol y estilo de juego, garantizando que cada inversión en tu arsenal sea la correcta.</p>
       </Section>
-      <Section title="Compromiso MLQ">
-        <ul className="list-disc pl-5 space-y-2">
-          <li>Calidad Garantizada: Solo trabajamos con marcas que nosotros mismos usaríamos.</li>
-          <li>Soporte Técnico Especializado: Tu réplica es tu herramienta, la tratamos con el máximo respeto.</li>
-          <li>Comunidad Activa: Fomentamos el juego limpio y la camaradería en cada evento que organizamos.</li>
+      <Section title="Calidad y Compromiso">
+        <p>Apostamos por la mejor calidad a precios asequibles. Somos un equipo con grandes cualidades, y nuestra prioridad absoluta es cuidar a nuestros clientes y realizar, en la medida de lo posible, todos sus deseos y configuraciones personalizadas.</p>
+        <ul className="list-disc pl-5 space-y-2 mt-4">
+          <li>Calidad Garantizada: Solo trabajamos con marcas que nosotros mismos usaríamos en el campo.</li>
+          <li>Soporte Técnico Especializado: Tu réplica es tu herramienta, la tratamos con el máximo respeto y precisión.</li>
+          <li>Atención Omnicanal: Estaremos encantados de atenderte tanto de forma online como visitándonos en nuestra tienda física en Rubí.</li>
         </ul>
       </Section>
     </div>

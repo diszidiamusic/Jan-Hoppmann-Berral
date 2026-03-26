@@ -36,6 +36,9 @@ import { AboutUs, HelpPage, LegalInfoPage, ReturnsPage, SitemapPage, MechanicPag
 import logo from './image-removebg-preview-1.png';
 import banner1 from './e9407866-6fcf-4152-92dc-729e46863e0c.png';
 import banner2 from './6198d3dc-85be-44d6-82f0-f5c916582a38.png';
+import cuchilleriaImg from './cuchilleria.png';
+import piezasInternasImg from './piezas-internas.png';
+import supervivenciaImg from './supervivencia.png';
 
 // --- Types ---
 
@@ -450,7 +453,8 @@ const Navbar = ({
   onCartClick,
   onLogoClick,
   onAboutClick,
-  onMechanicClick
+  onMechanicClick,
+  onHelpClick
 }: { 
   onCategoryClick: (cat: 'replicas' | 'piezasInternas' | 'cuchilleria' | 'supervivencia') => void;
   cartCount: number;
@@ -458,6 +462,7 @@ const Navbar = ({
   onLogoClick: () => void;
   onAboutClick: () => void;
   onMechanicClick: () => void;
+  onHelpClick: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -556,7 +561,7 @@ const Navbar = ({
           
           <button onClick={onAboutClick} className="hover:text-tactical-orange transition-colors">QUIÉNES SOMOS</button>
           <button onClick={onMechanicClick} className="hover:text-tactical-orange transition-colors">SERVICIO DE MECÁNICO</button>
-          <a href="#contacto" className="hover:text-tactical-orange transition-colors">Contacto</a>
+          <button onClick={onHelpClick} className="hover:text-tactical-orange transition-colors">AYUDA</button>
 
           <button 
             onClick={onCartClick}
@@ -595,7 +600,7 @@ const Navbar = ({
             </div>
             <button onClick={() => { onAboutClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">QUIÉNES SOMOS</button>
             <button onClick={() => { onMechanicClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">SERVICIO DE MECÁNICO</button>
-            <a href="#contacto" onClick={() => setIsOpen(false)} className="text-xl font-display font-bold uppercase">Contacto</a>
+            <button onClick={() => { onHelpClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">AYUDA</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -606,9 +611,9 @@ const Navbar = ({
 const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroImages = [
+    banner1,
     "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2000",
-    "https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?auto=format&fit=crop&q=80&w=2000",
-    "https://images.unsplash.com/photo-1590235438337-97939c36600c?auto=format&fit=crop&q=80&w=2000"
+    banner2
   ];
 
   useEffect(() => {
@@ -775,17 +780,22 @@ const ValueProp = () => {
     { 
       icon: <Shield className="text-tactical-orange" />, 
       title: "Garantía Táctica", 
-      desc: "Todos nuestros productos y servicios técnicos cuentan con garantía real y soporte post-venta." 
+      desc: "Confianza total con soporte post-venta real y garantía en todas tus compras." 
     },
     { 
       icon: <Package className="text-tactical-orange" />, 
       title: "Stock Real en Rubí", 
-      desc: "Sin esperas. Lo que ves en la web está en nuestra tienda física listo para ser recogido." 
+      desc: "Disponibilidad inmediata en nuestra tienda física. Sin esperas, recogida al momento." 
     },
     { 
-      icon: <Users className="text-tactical-orange" />, 
-      title: "Comunidad Activa", 
-      desc: "Únete a nuestro equipo y participa en partidas exclusivas y entrenamientos tácticos." 
+      icon: <Wrench className="text-tactical-orange" />, 
+      title: "Mecánico Especializado", 
+      desc: "Reparación, mantenimiento y ajustes técnicos con experiencia profesional garantizada." 
+    },
+    { 
+      icon: <Zap className="text-tactical-orange" />, 
+      title: "Personalización y Upgrades", 
+      desc: "Mejoras de rendimiento y estética a medida para adaptar tu réplica a tu estilo de juego." 
     }
   ];
 
@@ -816,9 +826,9 @@ const ValueProp = () => {
 const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }) => {
   const cats = [
     { id: 'replicas', name: "Réplicas", img: banner1, count: "120+ Modelos" },
-    { id: 'piezasInternas', name: "Piezas Internas", img: banner2, count: "Upgrades de Precisión" },
-    { id: 'cuchilleria', name: "Cuchillería", img: "https://images.unsplash.com/photo-1574621100236-d25b64cfd647?auto=format&fit=crop&q=80&w=800", count: "Tácticos, Supervivencia" },
-    { id: 'supervivencia', name: "Supervivencia", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800", count: "Camping, Bushcraft" },
+    { id: 'piezasInternas', name: "Piezas Internas", img: piezasInternasImg, count: "Upgrades de Precisión" },
+    { id: 'cuchilleria', name: "Cuchillería", img: cuchilleriaImg, count: "Tácticos, Supervivencia" },
+    { id: 'supervivencia', name: "Supervivencia", img: supervivenciaImg, count: "Camping, Bushcraft" },
   ];
 
   return (
@@ -1275,6 +1285,7 @@ export default function App() {
         onLogoClick={() => { setView('home'); setShowCatalog(false); }}
         onAboutClick={() => { setView('about'); setShowCatalog(false); }}
         onMechanicClick={() => { setView('mechanic'); setShowCatalog(false); }}
+        onHelpClick={() => { setView('help'); setShowCatalog(false); }}
       />
       
       <main>
