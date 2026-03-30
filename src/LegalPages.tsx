@@ -17,8 +17,6 @@ import {
   Wrench,
   Zap
 } from 'lucide-react';
-import banner1 from './e9407866-6fcf-4152-92dc-729e46863e0c.png';
-import banner2 from './6198d3dc-85be-44d6-82f0-f5c916582a38.png';
 
 // --- Shared Components ---
 const PageHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => (
@@ -337,7 +335,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src={banner1} 
+          src="/images/replicas.png" 
           alt="Estado de Fábrica" 
           className="w-full h-full object-cover grayscale opacity-60"
           referrerPolicy="no-referrer"
@@ -351,7 +349,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src={banner2} 
+          src="/images/banner2.png" 
           alt="Arma Optimizada" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
