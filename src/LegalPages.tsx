@@ -17,11 +17,29 @@ import {
   Wrench,
   Zap
 } from 'lucide-react';
+import banner1 from './e9407866-6fcf-4152-92dc-729e46863e0c.png';
+import banner2 from './6198d3dc-85be-44d6-82f0-f5c916582a38.png';
+import aboutHero from './about-hero.png';
+import aboutTeam from './about-team.png';
+import aboutStore from './about-store.png';
+import mechanic1 from './mechanic-1.png';
+import mechanic2 from './mechanic-2.png';
 
 // --- Shared Components ---
-const PageHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => (
-  <div className="pt-32 pb-16 bg-tactical-black border-b border-white/5">
-    <div className="max-w-4xl mx-auto px-6">
+const PageHeader = ({ title, subtitle, bgImage }: { title: string; subtitle?: string; bgImage?: string }) => (
+  <div className={`relative pt-32 pb-16 border-b border-white/5 overflow-hidden ${!bgImage ? 'bg-tactical-black' : ''}`}>
+    {bgImage && (
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={bgImage} 
+          alt={title} 
+          className="w-full h-full object-cover opacity-30 grayscale" 
+          referrerPolicy="no-referrer" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-tactical-black to-transparent"></div>
+      </div>
+    )}
+    <div className="relative z-10 max-w-4xl mx-auto px-6">
       <h1 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">{title}</h1>
       {subtitle && <p className="text-gray-500 font-bold uppercase tracking-widest text-sm">{subtitle}</p>}
     </div>
@@ -74,23 +92,69 @@ const AccordionSection = ({ title, children, isOpen, onToggle }: AccordionProps)
 // --- 1. Quiénes Somos ---
 export const AboutUs = () => (
   <div className="bg-tactical-black min-h-screen pb-24">
-    <PageHeader title="QUIÉNES SOMOS" subtitle="Nuestra historia y misión" />
+    <PageHeader 
+      title="QUIÉNES SOMOS" 
+      subtitle="Nuestra historia y misión" 
+      bgImage={aboutHero}
+    />
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <Section title="Nuestra Historia">
-        <p>En junio de 2015 abrimos las puertas de nuestra tienda física en Rubí, Barcelona, dedicada a la venta de réplicas y material de airsoft en todas sus categorías. Lo que comenzó como un proyecto local se ha convertido en un referente para la comunidad táctica.</p>
-        <p>MLQ Tactics es una empresa pequeña con grandes ideas e inquietudes que no para de renovarse día a día para ofrecerte siempre lo último en tecnología y equipamiento.</p>
-      </Section>
-      <Section title="Asesoramiento Individualizado">
-        <p>Somos especialistas en el asesoramiento personalizado de cada jugador. Entendemos que no todos los operadores tienen las mismas necesidades; por eso, analizamos tu nivel y compromiso con la actividad para recomendarte el equipo que realmente necesitas.</p>
-        <p>No te recomendaremos lo más caro, sino lo que mejor se adapte a tu rol y estilo de juego, garantizando que cada inversión en tu arsenal sea la correcta.</p>
-      </Section>
+      <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+        <Section title="Nuestra Historia">
+          <p>En junio de 2015 abrimos las puertas de nuestra tienda física en Rubí, Barcelona, dedicada a la venta de réplicas y material de airsoft en todas sus categorías. Lo que comenzó como un proyecto local se ha convertido en un referente para la comunidad táctica.</p>
+          <p>MLQ Tactics es una empresa pequeña con grandes ideas e inquietudes que no para de renovarse día a día para ofrecerte siempre lo último en tecnología y equipamiento.</p>
+        </Section>
+        <div className="relative">
+          <div className="aspect-video rounded-sm overflow-hidden border border-white/10 shadow-2xl">
+            <img 
+              src={aboutStore} 
+              alt="Nuestra tienda" 
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
+              referrerPolicy="no-referrer" 
+            />
+          </div>
+          <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-tactical-orange pointer-events-none"></div>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+        <div className="order-2 md:order-1 relative">
+          <div className="aspect-square rounded-sm overflow-hidden border border-white/10 shadow-2xl">
+            <img 
+              src={aboutTeam} 
+              alt="Nuestro equipo" 
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
+              referrerPolicy="no-referrer" 
+            />
+          </div>
+          <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-tactical-orange pointer-events-none"></div>
+        </div>
+        <div className="order-1 md:order-2">
+          <Section title="Asesoramiento Individualizado">
+            <p>Somos especialistas en el asesoramiento personalizado de cada jugador. Entendemos que no todos los operadores tienen las mismas necesidades; por eso, analizamos tu nivel y compromiso con la actividad para recomendarte el equipo que realmente necesitas.</p>
+            <p>No te recomendaremos lo más caro, sino lo que mejor se adapte a tu rol y estilo de juego, garantizando que cada inversión en tu arsenal sea la correcta.</p>
+          </Section>
+        </div>
+      </div>
+
       <Section title="Calidad y Compromiso">
         <p>Apostamos por la mejor calidad a precios asequibles. Somos un equipo con grandes cualidades, y nuestra prioridad absoluta es cuidar a nuestros clientes y realizar, en la medida de lo posible, todos sus deseos y configuraciones personalizadas.</p>
-        <ul className="list-disc pl-5 space-y-2 mt-4">
-          <li>Calidad Garantizada: Solo trabajamos con marcas que nosotros mismos usaríamos en el campo.</li>
-          <li>Soporte Técnico Especializado: Tu réplica es tu herramienta, la tratamos con el máximo respeto y precisión.</li>
-          <li>Atención Omnicanal: Estaremos encantados de atenderte tanto de forma online como visitándonos en nuestra tienda física en Rubí.</li>
-        </ul>
+        <div className="grid sm:grid-cols-3 gap-6 mt-8">
+          <div className="p-6 bg-tactical-gray/20 border border-white/5 rounded-sm">
+            <ShieldCheck className="text-tactical-orange mb-4" size={24} />
+            <h4 className="font-display font-bold uppercase text-sm mb-2">Calidad Garantizada</h4>
+            <p className="text-[10px] text-gray-500">Solo marcas que nosotros mismos usaríamos en el campo.</p>
+          </div>
+          <div className="p-6 bg-tactical-gray/20 border border-white/5 rounded-sm">
+            <Wrench className="text-tactical-orange mb-4" size={24} />
+            <h4 className="font-display font-bold uppercase text-sm mb-2">Soporte Técnico</h4>
+            <p className="text-[10px] text-gray-500">Tratamos tu réplica con el máximo respeto y precisión.</p>
+          </div>
+          <div className="p-6 bg-tactical-gray/20 border border-white/5 rounded-sm">
+            <Zap className="text-tactical-orange mb-4" size={24} />
+            <h4 className="font-display font-bold uppercase text-sm mb-2">Atención Omnicanal</h4>
+            <p className="text-[10px] text-gray-500">Online o en nuestra tienda física en Rubí.</p>
+          </div>
+        </div>
       </Section>
     </div>
   </div>
@@ -335,7 +399,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src="/images/replicas.png" 
+          src={banner1} 
           alt="Estado de Fábrica" 
           className="w-full h-full object-cover grayscale opacity-60"
           referrerPolicy="no-referrer"
@@ -349,7 +413,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src="/images/banner2.png" 
+          src={banner2} 
           alt="Arma Optimizada" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
@@ -420,7 +484,11 @@ export const MechanicPage = () => {
 
   return (
     <div className="bg-tactical-black min-h-screen pb-24">
-      <PageHeader title="SERVICIO DE MECÁNICO" subtitle="Mantenimiento, Upgrades y Personalización" />
+      <PageHeader 
+        title="SERVICIO DE MECÁNICO" 
+        subtitle="Mantenimiento, Upgrades y Personalización" 
+        bgImage={mechanic1}
+      />
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="mb-16">
           <Section title="¿POR QUÉ ELEGIR NUESTRO TALLER?">
@@ -439,6 +507,36 @@ export const MechanicPage = () => {
         </div>
 
         <MechanicBanner />
+
+        <div className="mb-16">
+          <Section title="NUESTRO TALLER EN ACCIÓN">
+            <p className="mb-8">Contamos con las herramientas más avanzadas y un entorno de trabajo optimizado para garantizar que cada réplica reciba el mejor trato posible.</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="relative group overflow-hidden rounded-sm border border-white/10 shadow-xl">
+                <img 
+                  src={mechanic1} 
+                  alt="Taller de Precisión" 
+                  className="w-full h-64 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-105" 
+                  referrerPolicy="no-referrer" 
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-tactical-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-tactical-orange">HERRAMIENTAS DE PRECISIÓN</span>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-sm border border-white/10 shadow-xl">
+                <img 
+                  src={mechanic2} 
+                  alt="Proceso de Upgrade" 
+                  className="w-full h-64 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-105" 
+                  referrerPolicy="no-referrer" 
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-tactical-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-tactical-orange">CONTROL DE CALIDAD RIGUROSO</span>
+                </div>
+              </div>
+            </div>
+          </Section>
+        </div>
 
         <div className="bg-tactical-gray/10 border border-white/5 p-8 md:p-12 rounded-sm">
           <div className="max-w-2xl mx-auto text-center">
