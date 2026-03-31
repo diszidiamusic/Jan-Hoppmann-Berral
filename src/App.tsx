@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AboutUs, HelpPage, LegalInfoPage, ReturnsPage, SitemapPage, MechanicPage } from './LegalPages';
+// Removed image imports to use public folder directly for Netlify deployment
 
 // --- Types ---
 

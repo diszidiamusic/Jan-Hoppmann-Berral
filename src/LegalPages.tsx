@@ -17,6 +17,7 @@ import {
   Wrench,
   Zap
 } from 'lucide-react';
+// Removed image imports to use public folder directly for Netlify deployment
 
 // --- Shared Components ---
 const PageHeader = ({ title, subtitle, bgImage }: { title: string; subtitle?: string; bgImage?: string }) => (
