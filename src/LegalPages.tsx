@@ -17,7 +17,15 @@ import {
   Wrench,
   Zap
 } from 'lucide-react';
-// Removed image imports to use public folder directly for Netlify deployment
+import banner1 from './images/banner1.png';
+import banner2 from './images/banner2.png';
+import aboutHero from './images/about-hero.png';
+import aboutTeam from './images/about-team.png';
+import aboutStore from './images/about-store.png';
+import armeria1 from './images/armeria1.png';
+// Placeholders for missing mechanic images
+const mechanic1 = armeria1;
+const mechanic2 = aboutTeam;
 
 // --- Shared Components ---
 const PageHeader = ({ title, subtitle, bgImage }: { title: string; subtitle?: string; bgImage?: string }) => (
@@ -89,7 +97,7 @@ export const AboutUs = () => (
     <PageHeader 
       title="QUIÉNES SOMOS" 
       subtitle="Nuestra historia y misión" 
-      bgImage="/images/about-hero.png"
+      bgImage={aboutHero}
     />
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
@@ -100,7 +108,7 @@ export const AboutUs = () => (
         <div className="relative">
           <div className="aspect-video rounded-sm overflow-hidden border border-white/10 shadow-2xl">
             <img 
-              src="/images/about-store.png" 
+              src={aboutHero} 
               alt="Nuestra tienda" 
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
               referrerPolicy="no-referrer" 
@@ -114,7 +122,7 @@ export const AboutUs = () => (
         <div className="order-2 md:order-1 relative">
           <div className="aspect-square rounded-sm overflow-hidden border border-white/10 shadow-2xl">
             <img 
-              src="/images/about-team.png" 
+              src={aboutTeam} 
               alt="Nuestro equipo" 
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
               referrerPolicy="no-referrer" 
@@ -393,7 +401,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src="/images/banner1.png" 
+          src={banner1} 
           alt="Estado de Fábrica" 
           className="w-full h-full object-cover grayscale opacity-60"
           referrerPolicy="no-referrer"
@@ -407,7 +415,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src="/images/banner2.png" 
+          src={banner2} 
           alt="Arma Optimizada" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
@@ -481,7 +489,7 @@ export const MechanicPage = () => {
       <PageHeader 
         title="SERVICIO DE MECÁNICO" 
         subtitle="Mantenimiento, Upgrades y Personalización" 
-        bgImage="/images/mechanic-1.png"
+        bgImage={mechanic1}
       />
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="mb-16">
@@ -508,7 +516,7 @@ export const MechanicPage = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="relative group overflow-hidden rounded-sm border border-white/10 shadow-xl">
                 <img 
-                  src="/images/mechanic-1.png" 
+                  src={armeria1} 
                   alt="Taller de Precisión" 
                   className="w-full h-64 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-105" 
                   referrerPolicy="no-referrer" 
@@ -519,7 +527,7 @@ export const MechanicPage = () => {
               </div>
               <div className="relative group overflow-hidden rounded-sm border border-white/10 shadow-xl">
                 <img 
-                  src="/images/mechanic-2.png" 
+                  src={aboutTeam} 
                   alt="Proceso de Upgrade" 
                   className="w-full h-64 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-105" 
                   referrerPolicy="no-referrer" 
