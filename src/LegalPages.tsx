@@ -17,13 +17,6 @@ import {
   Wrench,
   Zap
 } from 'lucide-react';
-import banner1 from './e9407866-6fcf-4152-92dc-729e46863e0c.png';
-import banner2 from './6198d3dc-85be-44d6-82f0-f5c916582a38.png';
-import aboutHero from './about-hero.png';
-import aboutTeam from './about-team.png';
-import aboutStore from './about-store.png';
-import mechanic1 from './mechanic-1.png';
-import mechanic2 from './mechanic-2.png';
 
 // --- Shared Components ---
 const PageHeader = ({ title, subtitle, bgImage }: { title: string; subtitle?: string; bgImage?: string }) => (
@@ -95,7 +88,7 @@ export const AboutUs = () => (
     <PageHeader 
       title="QUIÉNES SOMOS" 
       subtitle="Nuestra historia y misión" 
-      bgImage={aboutHero}
+      bgImage="/images/about-hero.png"
     />
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
@@ -106,7 +99,7 @@ export const AboutUs = () => (
         <div className="relative">
           <div className="aspect-video rounded-sm overflow-hidden border border-white/10 shadow-2xl">
             <img 
-              src={aboutStore} 
+              src="/images/about-store.png" 
               alt="Nuestra tienda" 
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
               referrerPolicy="no-referrer" 
@@ -120,7 +113,7 @@ export const AboutUs = () => (
         <div className="order-2 md:order-1 relative">
           <div className="aspect-square rounded-sm overflow-hidden border border-white/10 shadow-2xl">
             <img 
-              src={aboutTeam} 
+              src="/images/about-team.png" 
               alt="Nuestro equipo" 
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
               referrerPolicy="no-referrer" 
@@ -399,7 +392,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src={banner1} 
+          src="/images/banner1.png" 
           alt="Estado de Fábrica" 
           className="w-full h-full object-cover grayscale opacity-60"
           referrerPolicy="no-referrer"
@@ -413,7 +406,7 @@ const MechanicBanner = () => {
         }`}
       >
         <img 
-          src={banner2} 
+          src="/images/banner2.png" 
           alt="Arma Optimizada" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
@@ -487,7 +480,7 @@ export const MechanicPage = () => {
       <PageHeader 
         title="SERVICIO DE MECÁNICO" 
         subtitle="Mantenimiento, Upgrades y Personalización" 
-        bgImage={mechanic1}
+        bgImage="/images/mechanic-1.png"
       />
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="mb-16">
@@ -514,7 +507,7 @@ export const MechanicPage = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="relative group overflow-hidden rounded-sm border border-white/10 shadow-xl">
                 <img 
-                  src={mechanic1} 
+                  src="/images/mechanic-1.png" 
                   alt="Taller de Precisión" 
                   className="w-full h-64 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-105" 
                   referrerPolicy="no-referrer" 
@@ -525,7 +518,7 @@ export const MechanicPage = () => {
               </div>
               <div className="relative group overflow-hidden rounded-sm border border-white/10 shadow-xl">
                 <img 
-                  src={mechanic2} 
+                  src="/images/mechanic-2.png" 
                   alt="Proceso de Upgrade" 
                   className="w-full h-64 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-105" 
                   referrerPolicy="no-referrer" 

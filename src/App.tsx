@@ -33,12 +33,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AboutUs, HelpPage, LegalInfoPage, ReturnsPage, SitemapPage, MechanicPage } from './LegalPages';
-import logo from './image-removebg-preview-1.png';
-import banner1 from './e9407866-6fcf-4152-92dc-729e46863e0c.png';
-import banner2 from './6198d3dc-85be-44d6-82f0-f5c916582a38.png';
-import cuchilleriaImg from './cuchilleria.png';
-import piezasInternasImg from './piezas-internas.png';
-import supervivenciaImg from './supervivencia.png';
 
 // --- Types ---
 
@@ -487,7 +481,7 @@ const Navbar = ({
               className="relative w-14 h-14 flex items-center justify-center"
             >
               <img 
-                src={logo} 
+                src="/images/logo.png" 
                 alt="MLQ Tactics Logo" 
                 className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(242,125,38,0.3)]" 
                 referrerPolicy="no-referrer" 
@@ -611,9 +605,9 @@ const Navbar = ({
 const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroImages = [
-    banner1,
+    "/images/banner1.png",
     "https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2000",
-    banner2
+    "/images/banner2.png"
   ];
 
   useEffect(() => {
@@ -825,10 +819,10 @@ const ValueProp = () => {
 
 const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }) => {
   const cats = [
-    { id: 'replicas', name: "Réplicas", img: banner1, count: "120+ Modelos" },
-    { id: 'piezasInternas', name: "Piezas Internas", img: piezasInternasImg, count: "Upgrades de Precisión" },
-    { id: 'cuchilleria', name: "Cuchillería", img: cuchilleriaImg, count: "Tácticos, Supervivencia" },
-    { id: 'supervivencia', name: "Supervivencia", img: supervivenciaImg, count: "Camping, Bushcraft" },
+    { id: 'replicas', name: "Réplicas", img: "/images/banner1.png", count: "120+ Modelos" },
+    { id: 'piezasInternas', name: "Piezas Internas", img: "/images/piezas-internas.png", count: "Upgrades de Precisión" },
+    { id: 'cuchilleria', name: "Cuchillería", img: "/images/cuchilleria.png", count: "Tácticos, Supervivencia" },
+    { id: 'supervivencia', name: "Supervivencia", img: "/images/supervivencia.png", count: "Camping, Bushcraft" },
   ];
 
   return (
@@ -1034,7 +1028,7 @@ const Footer = ({ onNavigate }: { onNavigate: (view: View) => void }) => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 opacity-80 grayscale hover:grayscale-0 transition-all cursor-pointer" onClick={() => onNavigate('home')}>
               <img 
-                src={logo} 
+                src="/images/logo.png" 
                 alt="MLQ Tactics Logo" 
                 className="w-6 h-6 object-contain" 
                 referrerPolicy="no-referrer" 
