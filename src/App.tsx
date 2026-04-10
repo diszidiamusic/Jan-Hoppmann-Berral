@@ -52,6 +52,92 @@ interface CartItem {
   quantity: number;
 }
 
+interface Product {
+  id: string;
+  name: string;
+  desc: string;
+  longDesc?: string;
+  price: string;
+  img: string;
+  stock: number;
+  category: string;
+  subcategory: string;
+  status: string;
+  date: string;
+  tags?: string[];
+}
+
+// --- Constants & Config ---
+
+const CATEGORY_CONFIG = {
+  replicas: {
+    label: 'Réplicas',
+    subcategories: [
+      { id: 'all', label: 'Todas las Réplicas' },
+      { id: 'fusiles', label: 'Fusiles' },
+      { id: 'replicas gbb', label: 'Réplicas GBB' },
+      { id: 'pistolas', label: 'Pistolas' },
+      { id: 'escopetas', label: 'Escopetas' },
+      { id: 'escopeta perdigon', label: 'Escopeta Perdigón' },
+      { id: 'apoyo', label: 'Apoyo' },
+      { id: 'francotiradores', label: 'Francotiradores' },
+      { id: 'dmr', label: 'DMR' },
+      { id: 'lanzagranadas', label: 'Lanzagranadas' },
+      { id: 'replicas historicas', label: 'Réplicas Históricas' },
+      { id: 'juguetes airsoft', label: 'Juguetes Airsoft' },
+    ]
+  },
+  piezasInternas: {
+    label: 'Piezas Internas',
+    subcategories: [
+      { id: 'all', label: 'Todas las Piezas' },
+      { id: 'recambios gbb', label: 'Recambios GBB' },
+      { id: 'partes externas', label: 'Partes Externas' },
+      { id: 'rodamientos y casquillos', label: 'Rodamientos y Casquillos' },
+      { id: 'pistones y cabezas de piston', label: 'Pistones y Cabezas de Pistón' },
+      { id: 'upgrade snipers', label: 'Upgrade Snipers' },
+      { id: 'gatillos', label: 'Gatillos' },
+      { id: 'nozzles', label: 'Nozzles' },
+      { id: 'muelles y guias de muelles', label: 'Muelles y Guías de Muelles' },
+      { id: 'motores', label: 'Motores' },
+      { id: 'mosfets y gatillos electronicos', label: 'Mosfets y Gatillos Electrónicos' },
+      { id: 'gomas hop up', label: 'Gomas Hop Up' },
+      { id: 'gearboxes y carcasas', label: 'Gearboxes y Carcasas' },
+      { id: 'camaras hop up', label: 'Cámaras Hop Up' },
+      { id: 'cilindros y cabezas de cilindro', label: 'Cilindros y Cabezas de Cilindro' },
+      { id: 'canones de precision', label: 'Cañones de Precisión' },
+      { id: 'antireversal y cut off level', label: 'Antireversal y Cut Off Level' },
+      { id: 'piezas tokio marui', label: 'Piezas Tokyo Marui' },
+      { id: 'piezas internas de pistolas', label: 'Piezas Internas de Pistolas' },
+      { id: 'tappet selector plates', label: 'Tappet / Selector Plates' },
+    ]
+  },
+  cuchilleria: {
+    label: 'Cuchillería',
+    subcategories: [
+      { id: 'all', label: 'Toda la Cuchillería' },
+      { id: 'machetes', label: 'Machetes' },
+      { id: 'katanas', label: 'Katanas' },
+      { id: 'navajas', label: 'Navajas' },
+      { id: 'cuchillos', label: 'Cuchillos' },
+      { id: 'hachas', label: 'Hachas' },
+    ]
+  },
+  supervivencia: {
+    label: 'Supervivencia',
+    subcategories: [
+      { id: 'all', label: 'Toda la Supervivencia' },
+      { id: 'condiciones extremas', label: 'Condiciones Extremas' },
+      { id: 'kit de supervivencia', label: 'Kit de Supervivencia' },
+      { id: 'cubiertos para camping', label: 'Cubiertos para Camping' },
+      { id: 'botiquin', label: 'Botiquín' },
+      { id: 'bragas baclavas', label: 'Bragas / Baclavas' },
+      { id: 'varios para camping outdoor', label: 'Varios Camping Outdoor' },
+      { id: 'ponchos y complementos impermeables', label: 'Ponchos e Impermeables' },
+    ]
+  }
+};
+
 // --- App Component ---
 
 // --- Components ---
@@ -454,15 +540,17 @@ const Navbar = ({
   onLogoClick,
   onAboutClick,
   onMechanicClick,
-  onHelpClick
+  onHelpClick,
+  activeTab
 }: { 
-  onCategoryClick: (cat: 'replicas' | 'piezasInternas' | 'cuchilleria' | 'supervivencia') => void;
+  onCategoryClick: (cat: keyof typeof CATEGORY_CONFIG, subcat?: string) => void;
   cartCount: number;
   onCartClick: () => void;
   onLogoClick: () => void;
   onAboutClick: () => void;
   onMechanicClick: () => void;
   onHelpClick: () => void;
+  activeTab: keyof typeof CATEGORY_CONFIG;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -528,32 +616,88 @@ const Navbar = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="absolute top-full left-0 w-48 bg-tactical-black border border-white/10 p-2 shadow-2xl"
+                  className="absolute top-full left-1/2 -translate-x-1/2 w-[1100px] bg-tactical-black border border-white/10 p-8 shadow-2xl grid grid-cols-4 gap-8"
                 >
-                  <button 
-                    onClick={() => { onCategoryClick('replicas'); setShowShopDropdown(false); }}
-                    className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
-                  >
-                    Réplicas <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                  </button>
-                  <button 
-                    onClick={() => { onCategoryClick('piezasInternas'); setShowShopDropdown(false); }}
-                    className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
-                  >
-                    Piezas Internas <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                  </button>
-                  <button 
-                    onClick={() => { onCategoryClick('cuchilleria'); setShowShopDropdown(false); }}
-                    className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
-                  >
-                    Cuchillería <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                  </button>
-                  <button 
-                    onClick={() => { onCategoryClick('supervivencia'); setShowShopDropdown(false); }}
-                    className="w-full text-left px-4 py-3 hover:bg-tactical-orange hover:text-tactical-black transition-all flex items-center justify-between group"
-                  >
-                    Supervivencia <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                  </button>
+                  <div>
+                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">RÉPLICAS</h4>
+                    <div className="grid grid-cols-1 gap-y-2">
+                      {CATEGORY_CONFIG.replicas.subcategories.map(sub => (
+                        <button 
+                          key={sub.id}
+                          onClick={() => { 
+                            onCategoryClick('replicas', sub.id); 
+                            setShowShopDropdown(false); 
+                          }}
+                          className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                        >
+                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                          {sub.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="col-span-2">
+                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">PIEZAS INTERNAS</h4>
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+                      {CATEGORY_CONFIG.piezasInternas.subcategories.map(sub => (
+                        <button 
+                          key={sub.id}
+                          onClick={() => { 
+                            onCategoryClick('piezasInternas', sub.id); 
+                            setShowShopDropdown(false); 
+                          }}
+                          className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                        >
+                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                          {sub.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-8">
+                    <div>
+                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">CUCHILLERÍA</h4>
+                      <div className="grid grid-cols-1 gap-y-2">
+                        {CATEGORY_CONFIG.cuchilleria.subcategories.map(sub => (
+                          <button 
+                            key={sub.id}
+                            onClick={() => { 
+                              onCategoryClick('cuchilleria', sub.id); 
+                              setShowShopDropdown(false); 
+                            }}
+                            className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                          >
+                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">SUPERVIVENCIA</h4>
+                      <div className="grid grid-cols-1 gap-y-2">
+                        {CATEGORY_CONFIG.supervivencia.subcategories.map(sub => (
+                          <button 
+                            key={sub.id}
+                            onClick={() => { 
+                              onCategoryClick('supervivencia', sub.id); 
+                              setShowShopDropdown(false); 
+                            }}
+                            className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                          >
+                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-auto p-4 bg-tactical-orange/5 border border-tactical-orange/10 rounded-sm">
+                      <p className="text-[9px] text-gray-500 leading-relaxed">
+                        ¿Buscas algo específico? <br />
+                        <span className="text-white">Nuestro equipo técnico te asesora.</span>
+                      </p>
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -593,10 +737,70 @@ const Navbar = ({
           >
             <div className="flex flex-col gap-4">
               <span className="text-xs font-bold uppercase tracking-widest text-gray-500">TIENDA</span>
-              <button onClick={() => { onCategoryClick('replicas'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Réplicas</button>
-              <button onClick={() => { onCategoryClick('piezasInternas'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Piezas Internas</button>
-              <button onClick={() => { onCategoryClick('cuchilleria'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Cuchillería</button>
-              <button onClick={() => { onCategoryClick('supervivencia'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Supervivencia</button>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('replicas'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Réplicas</button>
+                {activeTab === 'replicas' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.replicas.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('replicas', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('piezasInternas'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Piezas Internas</button>
+                {activeTab === 'piezasInternas' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.piezasInternas.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('piezasInternas', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('cuchilleria'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Cuchillería</button>
+                {activeTab === 'cuchilleria' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.cuchilleria.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('cuchilleria', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('supervivencia'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Supervivencia</button>
+                {activeTab === 'supervivencia' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.supervivencia.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('supervivencia', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <button onClick={() => { onAboutClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">QUIÉNES SOMOS</button>
             <button onClick={() => { onMechanicClick(); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left">SERVICIO DE MECÁNICO</button>
@@ -1114,6 +1318,11 @@ const ProductDetailModal = ({
                   <span className="bg-tactical-orange/10 border border-tactical-orange/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-tactical-orange">
                     {product.category}
                   </span>
+                  {product.subcategory && (
+                    <span className="bg-white/5 border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-gray-300">
+                      {CATEGORY_CONFIG.replicas.subcategories.find(s => s.id === product.subcategory)?.label || product.subcategory}
+                    </span>
+                  )}
                   <span className="bg-white/5 border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
                     {product.status}
                   </span>
@@ -1167,15 +1376,16 @@ const ProductDetailModal = ({
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [showCatalog, setShowCatalog] = useState(false);
-  const [activeTab, setActiveTab] = useState<'replicas' | 'piezasInternas' | 'cuchilleria' | 'supervivencia'>('replicas');
+  const [activeTab, setActiveTab] = useState<keyof typeof CATEGORY_CONFIG>('replicas');
+  const [activeSubTab, setActiveSubTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState<'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'date-new' | 'date-old'>('date-new');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [dynamicProducts, setDynamicProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [dynamicProducts, setDynamicProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -1195,7 +1405,8 @@ export default function App() {
               price: item.precio || '0.00€',
               img: item.imagen || 'https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=400',
               stock: stock,
-              category: item.categoria || 'General',
+              category: (item.categoria || 'General').toLowerCase().trim(),
+              subcategory: (item.subcategoria || '').toLowerCase().trim(),
               status: stock > 0 ? 'EN STOCK' : 'AGOTADO',
               date: new Date().toISOString()
             };
@@ -1209,6 +1420,14 @@ export default function App() {
 
     fetchProducts();
   }, []);
+
+  const handleCategoryClick = (cat: keyof typeof CATEGORY_CONFIG, subcat: string = 'all') => {
+    setActiveTab(cat);
+    setActiveSubTab(subcat);
+    setShowCatalog(true);
+    setView('catalog');
+    window.scrollTo(0, 0);
+  };
 
   const addToCart = (item: any) => {
     setCart(prev => {
@@ -1234,32 +1453,52 @@ export default function App() {
       return item;
     }));
   };
-
+  
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  const catalogData = {
-    replicas: dynamicProducts.filter(p => {
-      const cat = p.category.toLowerCase();
-      return cat.includes('replica') || ['gbbr', 'aeg', 'pistola gbb', 'sniper'].includes(cat) || (!['interno', 'piezas internas', 'cuchillería', 'supervivencia'].includes(cat));
-    }),
-    piezasInternas: dynamicProducts.filter(p => ['interno', 'piezas internas'].includes(p.category.toLowerCase())),
-    cuchilleria: dynamicProducts.filter(p => p.category.toLowerCase() === 'cuchillería'),
-    supervivencia: dynamicProducts.filter(p => p.category.toLowerCase() === 'supervivencia')
-  };
-
   const getSortedData = () => {
-    let data = [...catalogData[activeTab]];
+    let data: Product[] = [];
     
+    // Filter by main category
+    if (activeTab === 'replicas') {
+      data = dynamicProducts.filter(p => {
+        const cat = p.category.toLowerCase();
+        return cat.includes('replica') || ['gbbr', 'aeg', 'pistola gbb', 'sniper'].includes(cat) || (!['interno', 'piezas internas', 'cuchillería', 'supervivencia', 'cuchilleria'].includes(cat));
+      });
+      
+      // Filter by subcategory if not 'all'
+      if (activeSubTab !== 'all') {
+        data = data.filter(p => p.subcategory === activeSubTab);
+      }
+    } else if (activeTab === 'piezasInternas') {
+      data = dynamicProducts.filter(p => ['interno', 'piezas internas'].includes(p.category.toLowerCase()));
+      if (activeSubTab !== 'all') {
+        data = data.filter(p => p.subcategory === activeSubTab);
+      }
+    } else if (activeTab === 'cuchilleria') {
+      data = dynamicProducts.filter(p => p.category.toLowerCase() === 'cuchillería' || p.category.toLowerCase() === 'cuchilleria');
+      if (activeSubTab !== 'all') {
+        data = data.filter(p => p.subcategory === activeSubTab);
+      }
+    } else if (activeTab === 'supervivencia') {
+      data = dynamicProducts.filter(p => p.category.toLowerCase() === 'supervivencia');
+      if (activeSubTab !== 'all') {
+        data = data.filter(p => p.subcategory === activeSubTab);
+      }
+    }
+    
+    // Apply search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       data = data.filter(item => 
         item.name.toLowerCase().includes(query) || 
         item.category.toLowerCase().includes(query) || 
         item.desc.toLowerCase().includes(query) ||
-        (item as any).tags?.some((tag: string) => tag.toLowerCase().includes(query))
+        item.subcategory.toLowerCase().includes(query)
       );
     }
 
+    // Apply sorting
     return data.sort((a, b) => {
       const priceA = parseFloat(a.price.replace('€', ''));
       const priceB = parseFloat(b.price.replace('€', ''));
@@ -1279,13 +1518,14 @@ export default function App() {
   return (
     <div className="relative">
       <Navbar 
-        onCategoryClick={(cat) => { setActiveTab(cat); setShowCatalog(true); setView('catalog'); }} 
+        onCategoryClick={handleCategoryClick} 
         cartCount={cartCount}
         onCartClick={() => setIsCartOpen(true)}
         onLogoClick={() => { setView('home'); setShowCatalog(false); }}
         onAboutClick={() => { setView('about'); setShowCatalog(false); }}
         onMechanicClick={() => { setView('mechanic'); setShowCatalog(false); }}
         onHelpClick={() => { setView('help'); setShowCatalog(false); }}
+        activeTab={activeTab}
       />
       
       <main>
@@ -1357,8 +1597,22 @@ export default function App() {
             <div className="max-w-7xl mx-auto px-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                 <div>
-                  <h2 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter">CATÁLOGO <span className="text-tactical-orange">COMPLETO</span></h2>
-                  <p className="text-gray-500 uppercase text-xs font-bold tracking-widest mt-2">Equipamiento verificado por operadores reales</p>
+                  <h2 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter">
+                    {activeTab === 'replicas' ? 'RÉPLICAS' : 
+                     activeTab === 'piezasInternas' ? 'PIEZAS INTERNAS' : 
+                     activeTab === 'cuchilleria' ? 'CUCHILLERÍA' : 'SUPERVIVENCIA'}
+                  </h2>
+                  <p className="text-gray-500 uppercase text-xs font-bold tracking-widest mt-2">
+                    {activeTab === 'replicas' && activeSubTab !== 'all' 
+                      ? CATEGORY_CONFIG.replicas.subcategories.find(s => s.id === activeSubTab)?.label 
+                      : activeTab === 'cuchilleria' && activeSubTab !== 'all'
+                      ? CATEGORY_CONFIG.cuchilleria.subcategories.find(s => s.id === activeSubTab)?.label
+                      : activeTab === 'piezasInternas' && activeSubTab !== 'all'
+                      ? CATEGORY_CONFIG.piezasInternas.subcategories.find(s => s.id === activeSubTab)?.label
+                      : activeTab === 'supervivencia' && activeSubTab !== 'all'
+                      ? CATEGORY_CONFIG.supervivencia.subcategories.find(s => s.id === activeSubTab)?.label
+                      : 'Equipamiento verificado por operadores reales'}
+                  </p>
                 </div>
                 <button 
                   onClick={() => { setShowCatalog(false); setView('home'); }}
@@ -1375,7 +1629,10 @@ export default function App() {
                     {(['replicas', 'piezasInternas', 'cuchilleria', 'supervivencia'] as const).map((tab) => (
                       <button
                         key={tab}
-                        onClick={() => setActiveTab(tab)}
+                        onClick={() => {
+                          setActiveTab(tab);
+                          setActiveSubTab('all');
+                        }}
                         className={`px-8 py-3 font-display font-black uppercase tracking-widest text-sm transition-all border-b-2 ${activeTab === tab ? 'border-tactical-orange text-tactical-orange bg-tactical-orange/5' : 'border-transparent text-gray-500 hover:text-white'}`}
                       >
                         {tab === 'cuchilleria' ? 'Cuchillería' : tab === 'supervivencia' ? 'Supervivencia' : tab === 'piezasInternas' ? 'Piezas Internas' : tab}
@@ -1411,6 +1668,21 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Subcategories for all categories */}
+                {(activeTab === 'replicas' || activeTab === 'cuchilleria' || activeTab === 'piezasInternas' || activeTab === 'supervivencia') && (
+                  <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-500">
+                    {CATEGORY_CONFIG[activeTab].subcategories.map(sub => (
+                      <button
+                        key={sub.id}
+                        onClick={() => setActiveSubTab(sub.id)}
+                        className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all border ${activeSubTab === sub.id ? 'bg-tactical-orange text-tactical-black border-tactical-orange shadow-[0_0_15px_rgba(242,125,38,0.3)]' : 'bg-transparent text-gray-500 border-white/10 hover:border-white/30 hover:text-white'}`}
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
                 {/* Search Bar Block */}
                 <div className="flex flex-col md:flex-row gap-4 items-center">
                   <div className="relative flex-1 w-full group">
@@ -1438,12 +1710,15 @@ export default function App() {
                       <span className="text-tactical-orange font-black text-lg leading-none">{getSortedData().length}</span>
                       <span className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Resultados</span>
                     </div>
-                    {searchQuery && (
+                    {(searchQuery || activeSubTab !== 'all') && (
                       <button 
-                        onClick={() => setSearchQuery('')}
-                        className="flex-1 md:flex-none bg-white/5 hover:bg-white/10 text-white px-6 py-4 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all border border-white/10"
+                        onClick={() => {
+                          setSearchQuery('');
+                          setActiveSubTab('all');
+                        }}
+                        className="flex-1 md:flex-none bg-white/5 hover:bg-white/10 text-white px-6 py-4 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all border border-white/10 flex items-center gap-2"
                       >
-                        Limpiar
+                        <RefreshCcw size={12} /> Limpiar
                       </button>
                     )}
                   </div>
@@ -1471,8 +1746,15 @@ export default function App() {
                         <div className="absolute inset-0 bg-tactical-orange/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <span className="bg-tactical-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-widest border border-tactical-orange/50">VER DETALLES</span>
                         </div>
-                        <div className="absolute top-4 left-4 bg-tactical-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-tactical-orange border border-tactical-orange/30">
-                          {item.category}
+                        <div className="absolute top-4 left-4 flex flex-col gap-2">
+                          <div className="bg-tactical-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-tactical-orange border border-tactical-orange/30">
+                            {item.category}
+                          </div>
+                          {item.subcategory && (
+                            <div className="bg-tactical-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white border border-white/10">
+                              {CATEGORY_CONFIG.replicas.subcategories.find(s => s.id === item.subcategory)?.label || item.subcategory}
+                            </div>
+                          )}
                         </div>
                         <div className={`absolute top-4 right-4 px-3 py-1 text-[10px] font-black uppercase tracking-widest ${item.stock > 0 ? 'bg-tactical-orange text-tactical-black' : 'bg-red-600 text-white'}`}>
                           {item.status}
