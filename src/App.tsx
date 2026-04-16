@@ -29,7 +29,9 @@ import {
   ArrowUpWideNarrow,
   Globe,
   Search,
-  RefreshCcw
+  RefreshCcw,
+  MessageCircle,
+  Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AboutUs, HelpPage, LegalInfoPage, ReturnsPage, SitemapPage, MechanicPage } from './LegalPages';
@@ -1278,6 +1280,19 @@ const ProductDetailModal = ({
 }) => {
   if (!product) return null;
 
+  const handleRestockRequest = (product: any, method: 'whatsapp' | 'email') => {
+    const message = `Hola, estoy interesado en el producto "${product.name}" (ID: ${product.id}) que actualmente está agotado. ¿Cuándo volverá a estar disponible?`;
+    const phone = "346285252696";
+    const email = "diszidiamusic@gmail.com";
+
+    if (method === 'whatsapp') {
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    } else {
+      const subject = `Interés en producto agotado: ${product.name}`;
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -1323,8 +1338,8 @@ const ProductDetailModal = ({
                       {CATEGORY_CONFIG.replicas.subcategories.find(s => s.id === product.subcategory)?.label || product.subcategory}
                     </span>
                   )}
-                  <span className="bg-white/5 border border-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                    {product.status}
+                  <span className={`border px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${product.stock > 0 ? 'bg-white/5 border-white/10 text-gray-400' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
+                    {product.stock > 0 ? product.status : 'AGOTADO'}
                   </span>
                 </div>
                 <h2 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter leading-none mb-4">
@@ -1348,7 +1363,9 @@ const ProductDetailModal = ({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white/5 p-4 border border-white/5">
                     <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">DISPONIBILIDAD</div>
-                    <div className="text-sm font-bold uppercase">Inmediata</div>
+                    <div className={`text-sm font-bold uppercase ${product.stock > 0 ? 'text-white' : 'text-red-500'}`}>
+                      {product.stock > 0 ? 'Inmediata' : 'Sin Stock'}
+                    </div>
                   </div>
                   <div className="bg-white/5 p-4 border border-white/5">
                     <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">GARANTÍA</div>
@@ -1356,12 +1373,37 @@ const ProductDetailModal = ({
                   </div>
                 </div>
 
-                <button 
-                  onClick={() => { onAddToCart(product); onClose(); }}
-                  className="w-full bg-white text-tactical-black py-5 font-display font-black uppercase tracking-widest hover:bg-tactical-orange transition-all flex items-center justify-center gap-3 group"
-                >
-                  AÑADIR A LA CESTA <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
-                </button>
+                {product.stock > 0 ? (
+                  <button 
+                    onClick={() => { onAddToCart(product); onClose(); }}
+                    className="w-full bg-white text-tactical-black py-5 font-display font-black uppercase tracking-widest hover:bg-tactical-orange transition-all flex items-center justify-center gap-3 group"
+                  >
+                    AÑADIR A LA CESTA <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
+                  </button>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="p-4 bg-red-500/5 border border-red-500/10 rounded-sm">
+                      <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest leading-relaxed">
+                        Este producto está temporalmente agotado. <br />
+                        <span className="text-white">¿Quieres que te avisemos cuando vuelva?</span>
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <button 
+                        onClick={() => handleRestockRequest(product, 'whatsapp')}
+                        className="bg-[#25D366] text-white py-4 px-6 font-display font-black uppercase tracking-widest hover:bg-white hover:text-[#25D366] transition-all flex items-center justify-center gap-2 group border-2 border-[#25D366]"
+                      >
+                        WHATSAPP <MessageCircle size={18} />
+                      </button>
+                      <button 
+                        onClick={() => handleRestockRequest(product, 'email')}
+                        className="bg-transparent border-2 border-white text-white py-4 px-6 font-display font-black uppercase tracking-widest hover:bg-tactical-orange hover:border-tactical-orange hover:text-tactical-black transition-all flex items-center justify-center gap-2 group"
+                      >
+                        EMAIL <Mail size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
@@ -1765,13 +1807,23 @@ export default function App() {
                         <p className="text-gray-500 text-xs mb-6 leading-relaxed h-8 overflow-hidden">{item.desc}</p>
                         <div className="flex justify-between items-center mt-auto">
                           <div className="text-2xl font-display font-black text-white">{item.price}</div>
-                          <button 
-                            onClick={() => item.stock > 0 && addToCart(item)}
-                            disabled={item.stock === 0}
-                            className={`px-6 py-2 text-xs font-black uppercase tracking-widest transition-all ${item.stock > 0 ? 'bg-white text-tactical-black hover:bg-tactical-orange' : 'bg-gray-800 text-gray-500 cursor-not-allowed'}`}
-                          >
-                            {item.stock > 0 ? 'COMPRAR' : 'AGOTADO'}
-                          </button>
+                          <div className="flex gap-2">
+                            {item.stock > 0 ? (
+                              <button 
+                                onClick={() => addToCart(item)}
+                                className="px-6 py-2 text-xs font-black uppercase tracking-widest transition-all bg-white text-tactical-black hover:bg-tactical-orange"
+                              >
+                                COMPRAR
+                              </button>
+                            ) : (
+                              <button 
+                                onClick={() => setSelectedProduct(item)}
+                                className="px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all bg-red-600/20 text-red-500 border border-red-500/30 hover:bg-red-600 hover:text-white"
+                              >
+                                AVÍSAME
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </motion.div>
