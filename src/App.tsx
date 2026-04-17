@@ -31,7 +31,8 @@ import {
   Search,
   RefreshCcw,
   MessageCircle,
-  Mail
+  Mail,
+  ExternalLink
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AboutUs, HelpPage, LegalInfoPage, ReturnsPage, SitemapPage, MechanicPage } from './LegalPages';
@@ -41,10 +42,14 @@ import banner2 from './images/banner2.png';
 import cuchilleriaImg from './images/cuchilleria.png';
 import piezasInternasImg from './images/piezas internas.png';
 import supervivenciaImg from './images/supervivencia.png';
+import hpaImg from './images/hpa.png';
+import consumiblesImg from './images/consumibles y accesostios.png';
+import equipamientoImg from './images/equipamiento.png';
+import marcasImg from './images/marcas.png';
 
 // --- Types ---
 
-type View = 'home' | 'catalog' | 'legal' | 'returns' | 'help' | 'about' | 'sitemap' | 'mechanic';
+type View = 'home' | 'catalog' | 'legal' | 'returns' | 'help' | 'about' | 'sitemap' | 'mechanic' | 'partners';
 
 interface CartItem {
   id: number | string;
@@ -136,6 +141,78 @@ const CATEGORY_CONFIG = {
       { id: 'bragas baclavas', label: 'Bragas / Baclavas' },
       { id: 'varios para camping outdoor', label: 'Varios Camping Outdoor' },
       { id: 'ponchos y complementos impermeables', label: 'Ponchos e Impermeables' },
+    ]
+  },
+  hpa: {
+    label: 'HPA',
+    subcategories: [
+      { id: 'all', label: 'Todo HPA' },
+      { id: 'compresores hpa', label: 'Compresores HPA' },
+      { id: 'replicas hpa', label: 'Réplicas HPA' },
+      { id: 'unidades hpa', label: 'Unidades HPA' },
+      { id: 'botellas hpa', label: 'Botellas HPA' },
+      { id: 'accesorios hpa', label: 'Accesorios HPA' },
+      { id: 'linea de aire y valvulas', label: 'Línea de Aire y Válvulas' },
+    ]
+  },
+  equipamiento: {
+    label: 'Equipamiento',
+    subcategories: [
+      { id: 'all', label: 'Todo el Equipamiento' },
+      { id: 'escudos', label: 'Escudos' },
+      { id: 'torniquete y porta torniquete', label: 'Torniquete y Porta Torniquete' },
+      { id: 'expositor', label: 'Expositor' },
+      { id: 'mascaras airsoft', label: 'Máscaras Airsoft' },
+      { id: 'morreras y otras protecciones', label: 'Morreras y Otras Protecciones' },
+      { id: 'gorras', label: 'Gorras' },
+      { id: 'comunicaciones y accesorios', label: 'Comunicaciones y Accesorios' },
+      { id: 'gafas airsoft', label: 'Gafas Airsoft' },
+      { id: 'cascos relacionados', label: 'Cascos & Relacionados' },
+      { id: 'chalecos tacticos', label: 'Chalecos Tácticos' },
+      { id: 'camuflaje airsoft', label: 'Camuflaje Airsoft' },
+      { id: 'guantes tacticos', label: 'Guantes Tácticos' },
+      { id: 'fundas de pistola', label: 'Fundas de Pistola' },
+      { id: 'maletines rigidos airsoft', label: 'Maletines Rígidos' },
+      { id: 'botas', label: 'Botas' },
+      { id: 'uniformes', label: 'Uniformes' },
+      { id: 'pantalones', label: 'Pantalones' },
+      { id: 'fundas de transporte mochila', label: 'Mochilas / Transporte' },
+      { id: 'parches', label: 'Parches' },
+      { id: 'cantimploras y bolsas de hidratacion', label: 'Hidratación' },
+      { id: 'correas y enganches', label: 'Correas y Enganches' },
+      { id: 'cinturones', label: 'Cinturones' },
+      { id: 'pouches', label: 'Pouches' },
+      { id: 'camisetas', label: 'Camisetas' },
+    ]
+  },
+  consumibles: {
+    label: 'Consumibles',
+    subcategories: [
+      { id: 'all', label: 'Todos los Consumibles' },
+      { id: 'bolas de airsoft', label: 'Bolas de Airsoft' },
+      { id: 'baterias y cargadores', label: 'Baterías y Cargadores' },
+      { id: 'gas y bombonas co2', label: 'Gas y CO2' },
+      { id: 'lubricantes grasas y herramientas', label: 'Mantenimiento / Herramientas' },
+      { id: 'pilas', label: 'Pilas' },
+      { id: 'tico-tico', label: 'Tico-Tico' },
+      { id: 'sprays de pintura', label: 'Sprays de Pintura' },
+      { id: 'llaveros', label: 'Llaveros' },
+      { id: 'dummy', label: 'Dummy' },
+      { id: 'red dots y visores', label: 'Red Dots y Visores' },
+      { id: 'monturas y anillas', label: 'Monturas y Anillas' },
+      { id: 'lasers linternas e iluminacion', label: 'Iluminación y Lasers' },
+      { id: 'guardamanos y railes', label: 'Guardamanos y Raíles' },
+      { id: 'grips y bipodes', label: 'Grips y Bípodes' },
+      { id: 'extensores', label: 'Extensores' },
+      { id: 'culatas', label: 'Culatas' },
+      { id: 'cargadores', label: 'Cargadores' },
+      { id: 'trazadores', label: 'Trazadores' },
+      { id: 'granadas', label: 'Granadas' },
+      { id: 'dianas', label: 'Dianas' },
+      { id: 'cronografos', label: 'Cronógrafos' },
+      { id: 'bocachas', label: 'Bocachas' },
+      { id: 'silenciadores', label: 'Silenciadores' },
+      { id: 'perdigones', label: 'Perdigones' },
     ]
   }
 };
@@ -618,29 +695,50 @@ const Navbar = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 w-[1100px] bg-tactical-black border border-white/10 p-8 shadow-2xl grid grid-cols-4 gap-8"
+                  className="absolute top-full left-1/2 -translate-x-1/2 w-[1240px] bg-tactical-black border border-white/10 p-8 shadow-2xl grid grid-cols-5 gap-x-10 gap-y-8 max-h-[85vh] overflow-y-auto custom-scrollbar"
                 >
-                  <div>
-                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">RÉPLICAS</h4>
-                    <div className="grid grid-cols-1 gap-y-2">
-                      {CATEGORY_CONFIG.replicas.subcategories.map(sub => (
-                        <button 
-                          key={sub.id}
-                          onClick={() => { 
-                            onCategoryClick('replicas', sub.id); 
-                            setShowShopDropdown(false); 
-                          }}
-                          className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
-                        >
-                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
-                          {sub.label}
-                        </button>
-                      ))}
+                  <div className="flex flex-col gap-8">
+                    <div>
+                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">RÉPLICAS</h4>
+                      <div className="grid grid-cols-1 gap-y-2">
+                        {CATEGORY_CONFIG.replicas.subcategories.map(sub => (
+                          <button 
+                            key={sub.id}
+                            onClick={() => { 
+                              onCategoryClick('replicas', sub.id); 
+                              setShowShopDropdown(false); 
+                            }}
+                            className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
+                          >
+                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">HPA</h4>
+                      <div className="grid grid-cols-1 gap-y-2">
+                        {CATEGORY_CONFIG.hpa.subcategories.map(sub => (
+                          <button 
+                            key={sub.id}
+                            onClick={() => { 
+                              onCategoryClick('hpa', sub.id); 
+                              setShowShopDropdown(false); 
+                            }}
+                            className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
+                          >
+                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div className="col-span-2">
-                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">PIEZAS INTERNAS</h4>
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+
+                  <div>
+                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">PIEZAS INTERNAS</h4>
+                    <div className="grid grid-cols-1 gap-y-2">
                       {CATEGORY_CONFIG.piezasInternas.subcategories.map(sub => (
                         <button 
                           key={sub.id}
@@ -648,17 +746,18 @@ const Navbar = ({
                             onCategoryClick('piezasInternas', sub.id); 
                             setShowShopDropdown(false); 
                           }}
-                          className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                          className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
                         >
-                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
                           {sub.label}
                         </button>
                       ))}
                     </div>
                   </div>
+
                   <div className="flex flex-col gap-8">
                     <div>
-                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">CUCHILLERÍA</h4>
+                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">CUCHILLERÍA</h4>
                       <div className="grid grid-cols-1 gap-y-2">
                         {CATEGORY_CONFIG.cuchilleria.subcategories.map(sub => (
                           <button 
@@ -667,16 +766,16 @@ const Navbar = ({
                               onCategoryClick('cuchilleria', sub.id); 
                               setShowShopDropdown(false); 
                             }}
-                            className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                            className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
                           >
-                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
                             {sub.label}
                           </button>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase">SUPERVIVENCIA</h4>
+                      <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">SUPERVIVENCIA</h4>
                       <div className="grid grid-cols-1 gap-y-2">
                         {CATEGORY_CONFIG.supervivencia.subcategories.map(sub => (
                           <button 
@@ -685,19 +784,51 @@ const Navbar = ({
                               onCategoryClick('supervivencia', sub.id); 
                               setShowShopDropdown(false); 
                             }}
-                            className="text-[11px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"
+                            className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
                           >
-                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors"></span>
+                            <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
                             {sub.label}
                           </button>
                         ))}
                       </div>
                     </div>
-                    <div className="mt-auto p-4 bg-tactical-orange/5 border border-tactical-orange/10 rounded-sm">
-                      <p className="text-[9px] text-gray-500 leading-relaxed">
-                        ¿Buscas algo específico? <br />
-                        <span className="text-white">Nuestro equipo técnico te asesora.</span>
-                      </p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">EQUIPAMIENTO</h4>
+                    <div className="grid grid-cols-1 gap-y-2">
+                      {CATEGORY_CONFIG.equipamiento.subcategories.map(sub => (
+                        <button 
+                          key={sub.id}
+                          onClick={() => { 
+                            onCategoryClick('equipamiento', sub.id); 
+                            setShowShopDropdown(false); 
+                          }}
+                          className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
+                        >
+                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
+                          {sub.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-[10px] font-black text-tactical-orange tracking-[0.3em] mb-4 border-b border-white/5 pb-2 uppercase text-center">CONSUMIBLES</h4>
+                    <div className="grid grid-cols-1 gap-y-2">
+                      {CATEGORY_CONFIG.consumibles.subcategories.map(sub => (
+                        <button 
+                          key={sub.id}
+                          onClick={() => { 
+                            onCategoryClick('consumibles', sub.id); 
+                            setShowShopDropdown(false); 
+                          }}
+                          className="text-[10px] text-left text-gray-400 hover:text-white transition-colors flex items-center gap-2 group font-bold uppercase tracking-tight"
+                        >
+                          <span className="w-1 h-1 bg-tactical-orange/30 group-hover:bg-tactical-orange transition-colors shrink-0"></span>
+                          {sub.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </motion.div>
@@ -735,7 +866,7 @@ const Navbar = ({
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-tactical-black border-b border-white/10 p-6 flex flex-col gap-6 md:hidden"
+            className="absolute top-full left-0 w-full bg-tactical-black border-b border-white/10 p-6 flex flex-col gap-6 md:hidden max-h-[85vh] overflow-y-auto custom-scrollbar"
           >
             <div className="flex flex-col gap-4">
               <span className="text-xs font-bold uppercase tracking-widest text-gray-500">TIENDA</span>
@@ -795,6 +926,54 @@ const Navbar = ({
                       <button 
                         key={sub.id}
                         onClick={() => { onCategoryClick('supervivencia', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('hpa'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">HPA</button>
+                {activeTab === 'hpa' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.hpa.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('hpa', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('equipamiento'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Equipamiento</button>
+                {activeTab === 'equipamiento' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.equipamiento.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('equipamiento', sub.id); setIsOpen(false); }}
+                        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => { onCategoryClick('consumibles'); setIsOpen(false); }} className="text-xl font-display font-bold uppercase text-left pl-4 border-l border-tactical-orange">Consumibles</button>
+                {activeTab === 'consumibles' && (
+                  <div className="flex flex-wrap gap-2 pl-4 mt-2">
+                    {CATEGORY_CONFIG.consumibles.subcategories.slice(1).map(sub => (
+                      <button 
+                        key={sub.id}
+                        onClick={() => { onCategoryClick('consumibles', sub.id); setIsOpen(false); }}
                         className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-tactical-orange transition-colors"
                       >
                         {sub.label}
@@ -1035,6 +1214,10 @@ const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }
     { id: 'piezasInternas', name: "Piezas Internas", img: piezasInternasImg, count: "Upgrades de Precisión" },
     { id: 'cuchilleria', name: "Cuchillería", img: cuchilleriaImg, count: "Tácticos, Supervivencia" },
     { id: 'supervivencia', name: "Supervivencia", img: supervivenciaImg, count: "Camping, Bushcraft" },
+    { id: 'hpa', name: "HPA", img: hpaImg, count: "Sistemas de Aire" },
+    { id: 'equipamiento', name: "Equipamiento", img: equipamientoImg, count: "Protección y Táctico" },
+    { id: 'consumibles', name: "Consumibles", img: consumiblesImg, count: "Bolas, Gas y Accesorios" },
+    { id: 'partners', name: "Marcas", img: marcasImg, count: "Partners de Elite" },
   ];
 
   return (
@@ -1052,11 +1235,17 @@ const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {cats.map((cat, i) => (
             <div 
               key={i} 
-              onClick={() => onCategoryClick(cat.id)}
+              onClick={() => {
+                if (cat.id === 'partners') {
+                  onCategoryClick('partners');
+                } else {
+                  onCategoryClick(cat.id);
+                }
+              }}
               className="relative h-[400px] overflow-hidden group cursor-pointer"
             >
               <img 
@@ -1067,7 +1256,9 @@ const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }
               />
               <div className="absolute inset-0 bg-gradient-to-t from-tactical-black via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 p-8 w-full">
-                <div className="text-[10px] uppercase font-bold tracking-[0.3em] text-tactical-orange mb-2">{cat.count}</div>
+                <div className="text-[10px] uppercase font-bold tracking-[0.3em] text-tactical-orange mb-2">
+                  {cat.count}
+                </div>
                 <h3 className="text-3xl font-display font-black uppercase tracking-tighter">{cat.name}</h3>
                 <div className="h-1 w-0 bg-tactical-orange group-hover:w-full transition-all duration-500 mt-4"></div>
               </div>
@@ -1113,6 +1304,129 @@ const UrgencySection = () => {
         </div>
       </div>
     </section>
+  );
+};
+
+const PartnersPage = () => {
+  const eliteBrands = [
+    { name: "Tokyo Marui", desc: "La leyenda del airsoft japonés. Pioneros en el sistema AEG y referentes mundiales en fidelidad y rendimiento.", logo: "https://www.tokyo-marui.co.jp/common/images/logo.png" },
+    { name: "Krytac", desc: "Tecnología de vanguardia. Réplicas diseñadas para el máximo rendimiento desde el primer minuto.", logo: "https://krytac.com/wp-content/uploads/2021/05/krytac-logo-white.png" },
+    { name: "Gate", desc: "Los maestros de la electrónica. Gatillos electrónicos y sistemas de control que llevan tu réplica al futuro.", logo: "https://gatee.eu/templates/gate/images/logo.png" },
+    { name: "5.11 Tactical", desc: "Equipamiento profesional para operadores reales. Durabilidad y funcionalidad sin compromisos.", logo: "https://www.511tactical.com/static/version1712151614/frontend/FiveEleven/enterprise/en_US/images/logo.svg" },
+    { name: "VFC", desc: "Realismo extremo. Calidad de construcción externa inigualable y mecánicas de alta gama.", logo: "https://www.vegaforce.com/images/logo.png" },
+    { name: "LCT Airsoft", desc: "Acero y robustez. Las replicas de AK más realistas y duras del mercado.", logo: "http://www.lctairsoft.com/images/index/logo.png" }
+  ];
+
+  const brandCatalog = {
+    "0-9": ["4UANTUM", "5ku"],
+    "A": ["ABBEY", "ACTION ARMY", "AIP ARMY INTERNATIONAL PRODUCT", "AIRTECH STUDIOS", "A&K", "Albainox", "Amomax", "Angry Gun", "APS CONCEPTION", "ARCTURUS", "Arsenic", "ASG", "AW CUSTOM"],
+    "B": ["BALYSTIK", "Barbaric", "BIG DRAGON", "Blood Heritage", "Bollé", "BO MANUFACTURE"],
+    "C": ["COMBAT ZONE TACTICAL", "CONQUER", "Corso", "COWCOW Technology", "CYGNUS ARMORY", "Cyma"],
+    "D": ["Delta Tactics", "Dingo", "Duel Code", "Duracell"],
+    "E": ["EARMOR", "ELEMENT AIRSOFT", "Emerson", "E-Shooter", "ExtraStar"],
+    "F": ["FMA", "FPS SOFTAIR"],
+    "G": ["GATE", "GENS ACE", "G&G", "Golden Eagle", "G&P"],
+    "I": ["INMORTAL WARRIOR", "IPOWER"],
+    "J": ["Jing gong works"],
+    "K": ["K25", "KJ works", "Kodak"],
+    "L": ["Lancer Tactical", "LAYLAX", "Lct", "Lonex"],
+    "M": ["Maple Leaf", "Mastodon", "Maxx Model", "Mechanix", "MG custom", "MILTEC", "MLQ TACTIC", "Modify"],
+    "N": ["NIMROD", "NUPROL"],
+    "P": ["PALLARES SOLSONA NAVAJA GABACHA", "Panasonic", "Perun Airsoft", "PPS", "PROMETHEUS", "PTS", "PUFF DINO"],
+    "R": ["RACCOON", "Ragnar-Raids", "Red Training", "RETRO ARMS", "ROSSI", "RTC", "RWA"],
+    "S": ["Saigo Defense", "Secutor Arms", "SHS", "Six MM", "Skywoods", "SLONG", "Soger", "SPECNA", "Spirit Field", "Spitfire", "Steel Mule", "STINGER"],
+    "T": ["T238", "Tac", "tokisu", "Tokyo Marui", "tole 10 imperial"],
+    "U": ["UMAREX"],
+    "V": ["VectorOptic", "VFC", "Victory", "VIGOR", "viper tactical", "VORSK", "Vs studio"],
+    "W": ["WADSN", "WE", "WELL", "WOSPORT"],
+    "X": ["XCORTECH"],
+    "Z": ["ZASDAR"]
+  };
+
+  return (
+    <div className="pt-32 pb-24 bg-tactical-black min-h-screen">
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
+          <h1 className="text-5xl md:text-8xl font-display font-black mb-6 uppercase tracking-tighter italic">NUESTRO <span className="text-tactical-orange">ARSENAL</span></h1>
+          <p className="text-gray-400 max-w-2xl mx-auto uppercase text-xs font-bold tracking-[0.3em] leading-relaxed">Trabajamos con más de 100 marcas de confianza para garantizar que MLQ Tactics sea tu armería definitiva.</p>
+        </motion.div>
+
+        {/* Elite Partners */}
+        <div className="mb-32">
+          <div className="flex items-center gap-4 mb-12 justify-center">
+            <div className="h-px bg-white/10 flex-1 max-w-[100px]"></div>
+            <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-tactical-orange">Partners de Elite</h2>
+            <div className="h-px bg-white/10 flex-1 max-w-[100px]"></div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {eliteBrands.map((brand, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="glass-card p-10 flex flex-col items-center text-center group hover:border-tactical-orange/50 transition-all border border-white/5 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 p-2 opacity-5">
+                  <span className="text-6xl font-display font-black">0{i+1}</span>
+                </div>
+                <div className="h-16 mb-6 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                  <span className="text-xl font-display font-black tracking-tighter text-white group-hover:text-tactical-orange">{brand.name}</span>
+                </div>
+                <p className="text-gray-500 text-xs leading-relaxed mb-6 italic">{brand.desc}</p>
+                <div className="mt-auto pt-6 border-t border-white/5 w-full">
+                  <div className="text-[9px] text-gray-500 font-bold uppercase tracking-[0.2em]">Official MLQ Partner</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Full Brand List - Compact Layout */}
+        <div className="mb-32">
+          <div className="flex items-center gap-4 mb-12 justify-center">
+            <div className="h-px bg-white/10 flex-1 max-w-[100px]"></div>
+            <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-white/50">Listado Completo de Marcas</h2>
+            <div className="h-px bg-white/10 flex-1 max-w-[100px]"></div>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-12 gap-x-8 text-left bg-white/[0.02] p-12 border border-white/5 rounded-sm">
+            {Object.entries(brandCatalog).map(([letter, brands]) => (
+              <div key={letter} className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-tactical-orange font-display font-black text-2xl">{letter}</span>
+                  <div className="h-[2px] flex-1 bg-tactical-orange/20"></div>
+                </div>
+                <ul className="space-y-1.5 pr-4">
+                  {brands.map((brand) => (
+                    <li key={brand} className="text-[9px] font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors cursor-default whitespace-nowrap overflow-hidden text-ellipsis">
+                      {brand}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact CTA */}
+        <div className="p-12 bg-tactical-orange text-tactical-black rounded-sm text-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            {/* Visual pattern in the background */}
+            <div className="absolute top-0 left-0 w-full h-full tactical-grid"></div>
+          </div>
+          <h2 className="text-3xl font-display font-black mb-4 uppercase tracking-tighter italic">¿BUSCAS UNA MARCA ESPECÍFICA?</h2>
+          <p className="text-tactical-black font-black uppercase text-[10px] tracking-[0.3em] mb-10 max-w-xl mx-auto">Si no encuentras lo que buscas, nuestro equipo de compras lo localizará por ti.</p>
+          <a href="mailto:partners@mlqtactics.com" className="inline-block bg-tactical-black text-white px-12 py-5 font-display font-black uppercase tracking-widest hover:bg-tactical-green transition-all shadow-xl">CONTACTAR CON NOSOTROS</a>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -1177,6 +1491,7 @@ const Footer = ({ onNavigate }: { onNavigate: (view: View) => void }) => {
       links: [
         { label: 'QUIÉNES SOMOS', view: 'about' as View },
         { label: 'SERVICIO DE MECÁNICO', view: 'mechanic' as View },
+        { label: 'MARCAS DE ÉLITE', view: 'partners' as View },
       ]
     },
     {
@@ -1428,6 +1743,7 @@ export default function App() {
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [dynamicProducts, setDynamicProducts] = useState<Product[]>([]);
+  const [showOutOfStock, setShowOutOfStock] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -1505,28 +1821,26 @@ export default function App() {
     if (activeTab === 'replicas') {
       data = dynamicProducts.filter(p => {
         const cat = p.category.toLowerCase();
-        return cat.includes('replica') || ['gbbr', 'aeg', 'pistola gbb', 'sniper'].includes(cat) || (!['interno', 'piezas internas', 'cuchillería', 'supervivencia', 'cuchilleria'].includes(cat));
+        const otherCats = ['interno', 'piezas internas', 'cuchillería', 'supervivencia', 'cuchilleria', 'hpa', 'equipamiento', 'consumibles'];
+        return cat.includes('replica') || ['gbbr', 'aeg', 'pistola gbb', 'sniper'].includes(cat) || (!otherCats.includes(cat));
       });
-      
-      // Filter by subcategory if not 'all'
-      if (activeSubTab !== 'all') {
-        data = data.filter(p => p.subcategory === activeSubTab);
-      }
     } else if (activeTab === 'piezasInternas') {
       data = dynamicProducts.filter(p => ['interno', 'piezas internas'].includes(p.category.toLowerCase()));
-      if (activeSubTab !== 'all') {
-        data = data.filter(p => p.subcategory === activeSubTab);
-      }
-    } else if (activeTab === 'cuchilleria') {
-      data = dynamicProducts.filter(p => p.category.toLowerCase() === 'cuchillería' || p.category.toLowerCase() === 'cuchilleria');
-      if (activeSubTab !== 'all') {
-        data = data.filter(p => p.subcategory === activeSubTab);
-      }
-    } else if (activeTab === 'supervivencia') {
-      data = dynamicProducts.filter(p => p.category.toLowerCase() === 'supervivencia');
-      if (activeSubTab !== 'all') {
-        data = data.filter(p => p.subcategory === activeSubTab);
-      }
+    } else {
+      // Direct match for other categories
+      data = dynamicProducts.filter(p => 
+        p.category.toLowerCase() === activeTab.toLowerCase() || 
+        p.category.toLowerCase() === CATEGORY_CONFIG[activeTab].label.toLowerCase()
+      );
+    }
+
+    if (activeSubTab !== 'all') {
+      data = data.filter(p => p.subcategory === activeSubTab);
+    }
+
+    // Filter out of stock based on preference
+    if (!showOutOfStock) {
+      data = data.filter(p => p.stock > 0);
     }
     
     // Apply search query
@@ -1576,23 +1890,16 @@ export default function App() {
             <Hero onCatalogClick={() => { setView('catalog'); setShowCatalog(true); }} />
             <SocialProof />
             <ValueProp />
-            <Categories onCategoryClick={(cat) => { setActiveTab(cat); setShowCatalog(true); setView('catalog'); }} />
-            
-            {/* Authority Section */}
-            <section className="py-24 bg-tactical-black border-t border-white/5">
-              <div className="max-w-7xl mx-auto px-6 text-center">
-                <h2 className="text-3xl md:text-5xl font-display font-black mb-12 uppercase tracking-tighter">PARTNERS DE <span className="text-tactical-orange">ÉLITE</span></h2>
-                <div className="flex flex-wrap justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all">
-                  <div className="font-display font-black text-2xl tracking-tighter">TOKYO MARUI</div>
-                  <div className="font-display font-black text-2xl tracking-tighter">KRYTAC</div>
-                  <div className="font-display font-black text-2xl tracking-tighter">GATE</div>
-                  <div className="font-display font-black text-2xl tracking-tighter">5.11 TACTICAL</div>
-                  <div className="font-display font-black text-2xl tracking-tighter">VFC</div>
-                </div>
-              </div>
-            </section>
-
-            <FAQ />
+            <Categories onCategoryClick={(cat) => { 
+              if (cat === 'partners') {
+                setView('partners');
+                setShowCatalog(false);
+              } else {
+                setActiveTab(cat); 
+                setShowCatalog(true); 
+                setView('catalog'); 
+              }
+            }} />
 
             {/* Final CTA */}
             <section className="py-32 relative overflow-hidden bg-tactical-green">
@@ -1640,19 +1947,11 @@ export default function App() {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                 <div>
                   <h2 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter">
-                    {activeTab === 'replicas' ? 'RÉPLICAS' : 
-                     activeTab === 'piezasInternas' ? 'PIEZAS INTERNAS' : 
-                     activeTab === 'cuchilleria' ? 'CUCHILLERÍA' : 'SUPERVIVENCIA'}
+                    {CATEGORY_CONFIG[activeTab].label}
                   </h2>
                   <p className="text-gray-500 uppercase text-xs font-bold tracking-widest mt-2">
-                    {activeTab === 'replicas' && activeSubTab !== 'all' 
-                      ? CATEGORY_CONFIG.replicas.subcategories.find(s => s.id === activeSubTab)?.label 
-                      : activeTab === 'cuchilleria' && activeSubTab !== 'all'
-                      ? CATEGORY_CONFIG.cuchilleria.subcategories.find(s => s.id === activeSubTab)?.label
-                      : activeTab === 'piezasInternas' && activeSubTab !== 'all'
-                      ? CATEGORY_CONFIG.piezasInternas.subcategories.find(s => s.id === activeSubTab)?.label
-                      : activeTab === 'supervivencia' && activeSubTab !== 'all'
-                      ? CATEGORY_CONFIG.supervivencia.subcategories.find(s => s.id === activeSubTab)?.label
+                    {activeSubTab !== 'all' 
+                      ? CATEGORY_CONFIG[activeTab].subcategories.find(s => s.id === activeSubTab)?.label 
                       : 'Equipamiento verificado por operadores reales'}
                   </p>
                 </div>
@@ -1667,17 +1966,17 @@ export default function App() {
               {/* Tab Navigation & Search */}
               <div className="flex flex-col gap-8 mb-12">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-white/10 pb-6 gap-8">
-                  <div className="flex flex-wrap gap-4">
-                    {(['replicas', 'piezasInternas', 'cuchilleria', 'supervivencia'] as const).map((tab) => (
+                  <div className="flex flex-wrap gap-4 overflow-x-auto pb-2 border-b border-white/5 no-scrollbar">
+                    {(Object.keys(CATEGORY_CONFIG) as (keyof typeof CATEGORY_CONFIG)[]).map((tab) => (
                       <button
                         key={tab}
                         onClick={() => {
                           setActiveTab(tab);
                           setActiveSubTab('all');
                         }}
-                        className={`px-8 py-3 font-display font-black uppercase tracking-widest text-sm transition-all border-b-2 ${activeTab === tab ? 'border-tactical-orange text-tactical-orange bg-tactical-orange/5' : 'border-transparent text-gray-500 hover:text-white'}`}
+                        className={`px-8 py-3 font-display font-black uppercase tracking-widest text-sm transition-all border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-tactical-orange text-tactical-orange bg-tactical-orange/5' : 'border-transparent text-gray-500 hover:text-white'}`}
                       >
-                        {tab === 'cuchilleria' ? 'Cuchillería' : tab === 'supervivencia' ? 'Supervivencia' : tab === 'piezasInternas' ? 'Piezas Internas' : tab}
+                        {CATEGORY_CONFIG[tab].label}
                       </button>
                     ))}
                   </div>
@@ -1711,8 +2010,8 @@ export default function App() {
                 </div>
 
                 {/* Subcategories for all categories */}
-                {(activeTab === 'replicas' || activeTab === 'cuchilleria' || activeTab === 'piezasInternas' || activeTab === 'supervivencia') && (
-                  <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-500">
+                {CATEGORY_CONFIG[activeTab].subcategories.length > 1 && (
+                  <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-500 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
                     {CATEGORY_CONFIG[activeTab].subcategories.map(sub => (
                       <button
                         key={sub.id}
@@ -1747,7 +2046,20 @@ export default function App() {
                       </button>
                     )}
                   </div>
-                  <div className="flex items-center gap-4 w-full md:w-auto">
+                  <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                    <label className="flex items-center gap-3 cursor-pointer group bg-tactical-gray/20 border border-white/10 px-5 py-3.5 rounded-sm hover:bg-white/5 transition-all">
+                      <div className="relative inline-flex items-center">
+                        <input 
+                          type="checkbox" 
+                          checked={showOutOfStock} 
+                          onChange={(e) => setShowOutOfStock(e.target.checked)}
+                          className="sr-only" 
+                        />
+                        <div className={`w-10 h-5 bg-white/10 rounded-full transition-colors ${showOutOfStock ? 'bg-tactical-orange/50' : ''}`}></div>
+                        <div className={`absolute left-0.5 top-0.5 w-4 h-4 bg-gray-400 rounded-full transition-transform ${showOutOfStock ? 'translate-x-5 bg-tactical-orange' : ''}`}></div>
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 group-hover:text-gray-300 transition-colors whitespace-nowrap italic">¿Ver agotados?</span>
+                    </label>
                     <div className="bg-tactical-gray/20 border border-white/10 px-6 py-4 rounded-sm flex items-center gap-3">
                       <span className="text-tactical-orange font-black text-lg leading-none">{getSortedData().length}</span>
                       <span className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Resultados</span>
@@ -1852,6 +2164,7 @@ export default function App() {
         {view === 'returns' && <ReturnsPage />}
         {view === 'help' && <HelpPage />}
         {view === 'about' && <AboutUs />}
+        {view === 'partners' && <PartnersPage />}
         {view === 'mechanic' && <MechanicPage />}
         {view === 'sitemap' && <SitemapPage onNavigate={setView} />}
       </main>
