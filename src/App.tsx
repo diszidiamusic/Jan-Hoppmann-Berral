@@ -1045,12 +1045,12 @@ const Hero = ({ onCatalogClick }: { onCatalogClick: () => void }) => {
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black leading-[0.9] mb-6">
-            DOMINA EL <br />
-            <span className="text-tactical-orange">CAMPO DE BATALLA</span>
+            TIENDA DE <span className="text-tactical-orange">AIRSOFT</span> <br />
+            ELITE ONLINE
           </h1>
           
           <p className="text-lg md:text-xl text-gray-400 max-w-lg mb-8 leading-relaxed">
-            No solo vendemos réplicas. Forjamos guerreros. Equipamiento táctico de élite, upgrades de precisión y la comunidad más activa de Barcelona.
+            No solo vendemos réplicas. Forjamos guerreros. Equipamiento táctico de élite, upgrades de precisión y envíos rápidos a toda España.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -1131,9 +1131,9 @@ const SocialProof = () => {
 
         <div className="mt-20 grid md:grid-cols-3 gap-6">
           {[
-            { name: "Marc Rodríguez", text: "La mejor tienda de Barcelona. El asesoramiento técnico es de otro nivel, mi réplica ahora tira como un láser.", role: "Jugador Milsim" },
-            { name: "Santi López", text: "Trato impecable en la tienda de Rubí. Tienen stock real y no te intentan vender lo más caro, sino lo que necesitas.", role: "Principiante" },
-            { name: "Dani V.", text: "Upgrades rápidos y con garantía. Si quieres competir en serio, MLQTactics es el sitio.", role: "Veterano" }
+            { name: "Marc Rodríguez", text: "La mejor tienda online. El asesoramiento técnico es de otro nivel, mi réplica ahora tira como un láser.", role: "Jugador Milsim" },
+            { name: "Santi López", text: "Trato impecable y envío rapidísimo. Tienen stock real y no te intentan vender lo más caro, sino lo que necesitas.", role: "Principiante" },
+            { name: "Dani V.", text: "Upgrades rápidos y con garantía. Si quieres competir en serio a nivel nacional, MLQTactics es el sitio.", role: "Veterano" }
           ].map((testimonial, idx) => (
             <div key={idx} className="glass-card p-8 rounded-sm relative group hover:border-tactical-orange/50 transition-all">
               <div className="flex text-tactical-orange mb-4">
@@ -1169,8 +1169,8 @@ const ValueProp = () => {
     },
     { 
       icon: <Package className="text-tactical-orange" />, 
-      title: "Stock Real en Rubí", 
-      desc: "Disponibilidad inmediata en nuestra tienda física. Sin esperas, recogida al momento." 
+      title: "Stock Real Garantizado", 
+      desc: "Disponibilidad inmediata. Enviamos tu pedido en 24h para que no pares de jugar." 
     },
     { 
       icon: <Wrench className="text-tactical-orange" />, 
@@ -1188,7 +1188,7 @@ const ValueProp = () => {
     <section className="py-24 tactical-grid">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-display font-black mb-4">¿POR QUÉ <span className="text-tactical-orange">MLQ TACTICS</span>?</h2>
+          <h2 className="text-4xl md:text-6xl font-display font-black mb-4">MECÁNICO Y TIENDA DE <span className="text-tactical-orange">AIRSOFT</span></h2>
           <p className="text-gray-400 max-w-2xl mx-auto uppercase text-sm tracking-widest font-bold">Diferenciación, autoridad y compromiso con el jugador.</p>
         </div>
 
@@ -1225,7 +1225,7 @@ const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
-            <h2 className="text-4xl md:text-6xl font-display font-black">EQUÍPATE PARA EL <br /><span className="text-tactical-orange">ÉXITO</span></h2>
+            <h2 className="text-4xl md:text-6xl font-display font-black">CATÁLOGO DE <br /><span className="text-tactical-orange">PRODUCTOS AIRSOFT</span></h2>
           </div>
           <button 
             onClick={() => onCategoryClick('replicas')}
@@ -1236,24 +1236,27 @@ const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {cats.map((cat, i) => (
-            <div 
-              key={i} 
-              onClick={() => {
-                if (cat.id === 'partners') {
-                  onCategoryClick('partners');
-                } else {
-                  onCategoryClick(cat.id);
-                }
-              }}
-              className="relative h-[400px] overflow-hidden group cursor-pointer"
-            >
-              <img 
-                src={cat.img} 
-                alt={cat.name} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                referrerPolicy="no-referrer"
-              />
+            {cats.map((cat, i) => (
+              <a 
+                key={i} 
+                href={`#${cat.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (cat.id === 'partners') {
+                    onCategoryClick('partners');
+                  } else {
+                    onCategoryClick(cat.id);
+                  }
+                }}
+                className="relative h-[400px] overflow-hidden group cursor-pointer block"
+              >
+                <img 
+                  src={cat.img} 
+                  alt={`${cat.name} - Tienda de Airsoft MLQ Tactics`} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                  referrerPolicy="no-referrer"
+                  loading={i > 2 ? "lazy" : "eager"}
+                />
               <div className="absolute inset-0 bg-gradient-to-t from-tactical-black via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 p-8 w-full">
                 <div className="text-[10px] uppercase font-bold tracking-[0.3em] text-tactical-orange mb-2">
@@ -1262,7 +1265,7 @@ const Categories = ({ onCategoryClick }: { onCategoryClick: (cat: any) => void }
                 <h3 className="text-3xl font-display font-black uppercase tracking-tighter">{cat.name}</h3>
                 <div className="h-1 w-0 bg-tactical-orange group-hover:w-full transition-all duration-500 mt-4"></div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
@@ -1434,41 +1437,111 @@ const FAQ = () => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   const faqs = [
-    { q: "¿Hacéis envíos a toda España?", a: "Sí, realizamos envíos urgentes 24/48h a toda la península y Baleares. También puedes recoger tu pedido gratis en nuestra tienda de Rubí." },
-    { q: "¿Es legal jugar al airsoft en España?", a: "Totalmente legal siempre que se cumpla la normativa de tarjetas de armas de 4ª categoría. En MLQTactics te asesoramos y ayudamos con todo el papeleo." },
-    { q: "Soy principiante, ¿por dónde empiezo?", a: "Te recomendamos nuestro 'Pack Recluta' que incluye réplica fiable, protección ocular homologada y batería. Ven a vernos y te orientaremos sin compromiso." },
+    { 
+      q: "¿Es seguro comprar réplicas de airsoft online en MLQ Tactics?", 
+      a: "Totalmente. En MLQ Tactics garantizamos un proceso de compra 100% seguro. Todas nuestras réplicas pasan un control de calidad antes del envío y cumplen con la normativa vigente en España. Además, ofrecemos soporte post-venta especializado para cualquier duda técnica que puedas tener tras recibir tu pedido." 
+    },
+    { 
+      q: "¿Cuánto tarda el envío de mi pedido?", 
+      a: "Realizamos envíos urgentes a toda la península a través de agencias de transporte líderes. Por lo general, los pedidos se entregan en un plazo de 24 a 48 horas laborables siempre que el producto esté en stock. Te proporcionaremos un número de seguimiento para que sepas en todo momento dónde está tu equipamiento." 
+    },
+    { 
+      q: "¿Ofrecéis servicio de upgrade y personalización de réplicas?", 
+      a: "Sí, somos especialistas en mecánica de precisión para airsoft. En nuestro taller realizamos desde mantenimientos básicos hasta configuraciones de alto rendimiento (HPA, MOSFETs, cañones de precisión, etc.). Puedes enviarnos tu réplica desde cualquier punto de España para que nuestro equipo técnico realice las mejoras necesarias." 
+    },
+    { 
+      q: "¿Qué tipo de garantía tienen los productos?", 
+      a: "Todos nuestros productos cuentan con la garantía legal establecida. Además, las réplicas que pasan por nuestro taller para upgrades cuentan con la garantía de MLQ Tactics sobre la mano de obra y los componentes instalados. Nuestra prioridad es que tu equipo rinda al máximo en cada partida." 
+    },
+    { 
+      q: "¿Cómo puedo saber qué réplica es la adecuada para mí?", 
+      a: "Si eres principiante, te recomendamos contactar con nosotros. Analizaremos tu estilo de juego preferido (CQB, bosque, sniper) y tu presupuesto para ofrecerte la mejor opción calidad-precio. Unirte a la comunidad de airsoft con el equipo adecuado marca la diferencia en tu experiencia de juego." 
+    }
   ];
 
   return (
-    <section className="py-24 bg-tactical-black">
-      <div className="max-w-3xl mx-auto px-6">
-        <h2 className="text-4xl font-display font-black text-center mb-16 uppercase tracking-tighter">PREGUNTAS <span className="text-tactical-orange">FRECUENTES</span></h2>
-        <div className="space-y-4">
-          {faqs.map((faq, i) => (
-            <div key={i} className="border border-white/10 rounded-sm overflow-hidden">
-              <button 
-                className="w-full p-6 flex justify-between items-center text-left bg-tactical-gray/30 hover:bg-tactical-gray/50 transition-all"
-                onClick={() => setOpenIdx(openIdx === i ? null : i)}
-              >
-                <span className="font-display font-bold uppercase tracking-tight">{faq.q}</span>
-                <ChevronDown className={`transition-transform ${openIdx === i ? 'rotate-180' : ''}`} />
-              </button>
-              <AnimatePresence>
-                {openIdx === i && (
-                  <motion.div 
-                    initial={{ height: 0 }}
-                    animate={{ height: 'auto' }}
-                    exit={{ height: 0 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 text-gray-400 text-sm leading-relaxed border-t border-white/5">
-                      {faq.a}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+    <section className="py-24 bg-tactical-black border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16">
+          {/* SEO Content Column */}
+          <div className="prose prose-invert prose-orange max-w-none">
+            <h2 className="text-4xl font-display font-black uppercase tracking-tighter mb-8 italic">
+              TU TIENDA DE <span className="text-tactical-orange">AIRSOFT ONLINE</span> DE REFERENCIA
+            </h2>
+            <p className="text-gray-400 leading-relaxed mb-6">
+              Bienvenido a <strong>MLQ Tactics</strong>, el epicentro del airsoft online donde la pasión por el realismo y el rendimiento técnico se encuentran. Si estás aquí, es porque no te conformas con cualquier equipo; buscas ventaja táctica, fiabilidad y un soporte profesional que entienda tus necesidades como operador.
+            </p>
+            
+            <h3 className="text-2xl font-display font-bold uppercase text-white mt-10 mb-4 tracking-tight">Expertos en Réplicas de Airsoft de Alto Rendimiento</h3>
+            <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+              En MLQ Tactics, seleccionamos minuciosamente cada producto de nuestro catálogo. No somos simplemente una tienda; somos jugadores y técnicos. Por eso, solo trabajamos con las marcas líderes del mercado como <strong>Tokyo Marui</strong>, <strong>Krytac</strong>, <strong>VFC</strong> y <strong>Gate</strong>. Ya busques una AEG para partidas largas, una GBB por su realismo extremo o un sistema HPA para la máxima precisión, tenemos la plataforma ideal para ti.
+            </p>
+
+            <h3 className="text-2xl font-display font-bold uppercase text-white mt-10 mb-4 tracking-tight">Mucho más que ventas: Nuestro Taller Mecánico Especializado</h3>
+            <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+              La diferencia entre una réplica estándar y una herramienta de precisión de MLQ Tactics reside en el interior. Nuestro <strong>taller mecánico de airsoft</strong> es reconocido por llevar el rendimiento al límite. Realizamos instalaciones de gatillos electrónicos, mejoras de compresión, ajustes de R-Hop y configuraciones personalizadas para que tu réplica sea la envidia del campo de batalla.
+            </p>
+
+            <div className="p-6 bg-white/[0.02] border-l-4 border-tactical-orange my-10">
+              <h4 className="text-lg font-bold text-tactical-orange mb-2 uppercase">Beneficios de elegir MLQ Tactics</h4>
+              <ul className="list-none space-y-3 text-sm text-gray-400 p-0">
+                <li className="flex items-center gap-2"><div className="w-1 h-1 bg-tactical-orange"></div> <strong>Stock Real:</strong> Lo que ves en la web es lo que tenemos en nuestros almacenes.</li>
+                <li className="flex items-center gap-2"><div className="w-1 h-1 bg-tactical-orange"></div> <strong>Envío Urgente:</strong> Entregas en 24/48h para que no te pierdas la partida del fin de semana.</li>
+                <li className="flex items-center gap-2"><div className="w-1 h-1 bg-tactical-orange"></div> <strong>Asesoramiento Pro:</strong> Resolvemos tus dudas de hardware antes de que compres.</li>
+                <li className="flex items-center gap-2"><div className="w-1 h-1 bg-tactical-orange"></div> <strong>Comunidad Activa:</strong> No somos solo una tienda, somos parte del juego.</li>
+              </ul>
             </div>
-          ))}
+
+            <h2 className="text-3xl font-display font-black uppercase text-white mt-12 mb-6 tracking-tight">Equipamiento Táctico y Accesorios de Élite</h2>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Para dominar el campo, la réplica es solo la mitad del equipo. En nuestra sección de <strong>equipamiento táctico</strong> encontrarás desde chalecos porta-placas y uniformes de alta resistencia hasta protección ocular homologada y sistemas de comunicación. Todo probado bajo condiciones de uso real para asegurar que tu inversión soporte el estrés del combate simulado.
+            </p>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              Además, contamos con un catálogo extenso de consumibles: bolas biodegradables de alta precisión, gases de diferentes presiones y baterías de alta descarga para que tu réplica nunca te deje tirado en el momento crítico.
+            </p>
+          </div>
+
+          {/* FAQ Column */}
+          <div>
+            <h2 className="text-4xl font-display font-black uppercase tracking-tighter mb-12 text-center lg:text-left">
+              PREGUNTAS <span className="text-tactical-orange">FRECUENTES</span>
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, i) => (
+                <div key={i} className="border border-white/10 rounded-sm overflow-hidden bg-tactical-gray/10">
+                  <button 
+                    className="w-full p-6 flex justify-between items-center text-left hover:bg-tactical-gray/30 transition-all group"
+                    onClick={() => setOpenIdx(openIdx === i ? null : i)}
+                  >
+                    <span className="font-display font-bold uppercase tracking-tight text-sm group-hover:text-tactical-orange transition-colors">{faq.q}</span>
+                    <ChevronDown className={`transition-transform flex-shrink-0 ml-4 ${openIdx === i ? 'rotate-180 text-tactical-orange' : 'text-gray-500'}`} />
+                  </button>
+                  <AnimatePresence>
+                    {openIdx === i && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-6 text-gray-500 text-xs leading-relaxed border-t border-white/5 bg-black/20">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 p-8 border border-white/5 bg-tactical-orange/5 rounded-sm">
+              <h4 className="text-white font-display font-bold uppercase mb-4 tracking-widest text-sm">Compromiso MLQ Tactics</h4>
+              <p className="text-gray-500 text-xs leading-relaxed">
+                Nuestra misión es profesionalizar el airsoft en España. Cada vez que compras en MLQ Tactics, estás apoyando un proyecto que invierte en calidad técnica y en la expansión de nuestra afición común. No somos simplemente un ecommerce; somos tu partner táctico en cada despliegue.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1535,13 +1608,14 @@ const Footer = ({ onNavigate }: { onNavigate: (view: View) => void }) => {
                   >
                     {section.links.map((link) => (
                       <li key={link.label}>
-                        <button 
-                          onClick={() => { onNavigate(link.view); window.scrollTo(0, 0); }}
+                        <a 
+                          href={`#${link.view}`}
+                          onClick={(e) => { e.preventDefault(); onNavigate(link.view); window.scrollTo(0, 0); }}
                           className="text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-tactical-orange transition-colors flex items-center gap-2"
                         >
                           <ChevronRight size={10} className="text-tactical-orange/50" />
                           {link.label}
-                        </button>
+                        </a>
                       </li>
                     ))}
                   </motion.ul>
@@ -2093,9 +2167,10 @@ export default function App() {
                       <div className="relative h-64 overflow-hidden cursor-pointer" onClick={() => setSelectedProduct(item)}>
                         <img 
                           src={item.img} 
-                          alt={item.name} 
+                          alt={`${item.name} - Airsoft Elite`} 
                           className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                           referrerPolicy="no-referrer"
+                          loading="lazy"
                         />
                         <div className="absolute inset-0 bg-tactical-orange/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <span className="bg-tactical-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-widest border border-tactical-orange/50">VER DETALLES</span>
@@ -2121,12 +2196,15 @@ export default function App() {
                           <div className="text-2xl font-display font-black text-white">{item.price}</div>
                           <div className="flex gap-2">
                             {item.stock > 0 ? (
-                              <button 
-                                onClick={() => addToCart(item)}
-                                className="px-6 py-2 text-xs font-black uppercase tracking-widest transition-all bg-white text-tactical-black hover:bg-tactical-orange"
-                              >
-                                COMPRAR
-                              </button>
+                              <div className="flex flex-col items-center">
+                                <button 
+                                  onClick={() => addToCart(item)}
+                                  className="px-6 py-2 text-xs font-black uppercase tracking-widest transition-all bg-white text-tactical-black hover:bg-tactical-orange"
+                                >
+                                  COMPRAR
+                                </button>
+                                <span className="text-[7px] text-gray-600 font-bold mt-1 uppercase">Envío 24/48h</span>
+                              </div>
                             ) : (
                               <button 
                                 onClick={() => setSelectedProduct(item)}
