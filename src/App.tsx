@@ -8,6 +8,7 @@ import {
   Phone, 
   Instagram, 
   Facebook, 
+  ChevronLeft,
   ChevronRight, 
   Star, 
   CheckCircle2, 
@@ -1656,7 +1657,116 @@ const Footer = ({ onNavigate }: { onNavigate: (view: View) => void }) => {
   );
 };
 
-const ProductDetailModal = ({ 
+const TrendingCarousel = ({ products, onSelectProduct }: { products: Product[], onSelectProduct: (p: Product) => void }) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // We take some "striking" products or just the most recent/relevant ones
+  const trendingItems = products
+    .filter(p => p.category === 'replicas' || p.category === 'réplicas')
+    .slice(0, 10);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  if (trendingItems.length === 0) return null;
+
+  return (
+    <section className="py-24 bg-tactical-black relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-tactical-orange/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div>
+            <div className="inline-block bg-tactical-orange/10 border border-tactical-orange/20 px-3 py-1 rounded-full text-tactical-orange text-[10px] font-bold uppercase tracking-widest mb-4">
+              EQUIPAMIENTO EN TENDENCIA
+            </div>
+            <h2 className="text-4xl md:text-6xl font-display font-black uppercase tracking-tighter">
+              REPLICAS <span className="text-tactical-orange">DESTACADAS</span>
+            </h2>
+          </div>
+          <div className="flex gap-4">
+            <button 
+              onClick={() => scroll('left')}
+              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-tactical-orange hover:text-tactical-black transition-all group"
+            >
+              <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
+            </button>
+            <button 
+              onClick={() => scroll('right')}
+              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-tactical-orange hover:text-tactical-black transition-all group"
+            >
+              <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          </div>
+        </div>
+
+        <div 
+          ref={scrollRef}
+          className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8 pt-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {trendingItems.map((item) => (
+            <motion.div 
+              key={item.id} 
+              whileHover={{ y: -10 }}
+              className="min-w-[300px] md:min-w-[380px] snap-center bg-tactical-gray/10 border border-white/5 p-6 rounded-sm relative group cursor-pointer"
+              onClick={() => onSelectProduct(item)}
+            >
+              <div className="absolute top-4 right-4 z-10">
+                <div className="bg-tactical-orange text-tactical-black text-[9px] font-black px-2 py-1 rounded-xs uppercase tracking-widest italic shadow-lg">
+                  TRENDING
+                </div>
+              </div>
+              
+              <div className="h-48 md:h-64 mb-6 relative overflow-hidden bg-black/40">
+                <img 
+                  src={item.img} 
+                  alt={item.name} 
+                  className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700" 
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-tactical-black/40 to-transparent"></div>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex justify-between items-start gap-4">
+                  <h3 className="text-lg md:text-xl font-display font-black uppercase tracking-tighter group-hover:text-tactical-orange transition-colors">
+                    {item.name}
+                  </h3>
+                  <div className="text-xl font-display font-black text-white whitespace-nowrap">
+                    {item.price}
+                  </div>
+                </div>
+                
+                <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed uppercase font-bold tracking-tight">
+                  {item.desc}
+                </p>
+                
+                <div className="pt-4 flex items-center justify-between border-t border-white/5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-tactical-orange rounded-full animate-pulse"></div>
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">En Stock Real</span>
+                  </div>
+                  <div className="text-[10px] font-black text-tactical-orange uppercase tracking-[0.2em] flex items-center gap-1 group-hover:translate-x-2 transition-transform">
+                    DETALLES <ArrowRight size={12} />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProductDetailModal = ({
   isOpen, 
   onClose, 
   product,
@@ -1963,6 +2073,10 @@ export default function App() {
           <>
             <Hero onCatalogClick={() => { setView('catalog'); setShowCatalog(true); }} />
             <SocialProof />
+            
+            {/* Trending Replicas Carousel */}
+            <TrendingCarousel products={dynamicProducts} onSelectProduct={setSelectedProduct} />
+
             <ValueProp />
             <Categories onCategoryClick={(cat) => { 
               if (cat === 'partners') {
